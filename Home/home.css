@@ -1,0 +1,533 @@
+/* =================================================== */
+/* == GERAL E VARIÁVEIS (TEMA) == */
+/* =================================================== */
+:root {
+    --fundo-preto: #0F0F0F;
+    --dourado: #C6A55C;
+    --branco: #FFFFFF;
+    --verde-sucesso: #28a745;
+    --cinza-card: #1C1C1E; /* Tom escuro para cards */
+    --cinza-borda: #2C2C2E;
+    --cinza-claro: #333; /* Para inputs e ícones da Home */
+}
+
+body {
+    background-color: var(--fundo-preto);
+    color: var(--branco);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    /* Força o layout mobile-first no desktop */
+    display: flex;
+    justify-content: center;
+}
+
+/* Wrapper principal para centralização (390px) */
+/* O .home-wrapper E .page-container usarão isso */
+body > div {
+    width: 100%;
+    max-width: 390px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: var(--fundo-preto);
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* =================================================== */
+/* == ESTILOS DA HOME (ETAPA 1) == */
+/* =================================================== */
+
+.home-wrapper {
+    padding-bottom: 80px; /* Espaço para o botão flutuante */
+    box-sizing: border-box; /* Garante que o padding não aumente a largura */
+}
+
+/* Header e Busca */
+.header-container {
+    background-color: var(--fundo-preto);
+    padding: 20px 20px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.barber-name {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dourado);
+}
+
+.user-icon {
+    font-size: 28px;
+    color: var(--branco);
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid var(--cinza-claro);
+    border-radius: 25px;
+    background-color: var(--cinza-claro);
+    color: var(--branco);
+    outline: none;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+.search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dourado);
+    pointer-events: none;
+}
+
+/* Banner e Conteúdo */
+.banner-slider {
+    height: 150px;
+    background-color: #222;
+    margin: 0 20px 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    color: var(--dourado);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content-container {
+    padding: 0 20px;
+}
+
+/* Abas de Navegação */
+.tabs-nav {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid var(--cinza-claro);
+    margin-bottom: 20px;
+}
+
+.tab {
+    padding: 10px 0;
+    color: var(--branco);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    flex-grow: 1;
+    text-align: center;
+}
+
+.tab.active {
+    color: var(--dourado);
+    border-bottom-color: var(--dourado);
+}
+
+/* Ícones Circulares */
+.quick-links {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+
+.link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    color: var(--dourado);
+    text-decoration: none;
+}
+
+.link-item i {
+    font-size: 24px;
+    background-color: var(--cinza-claro);
+    border-radius: 50%;
+    padding: 15px;
+    margin-bottom: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    width: 30px; /* Largura fixa */
+    height: 30px; /* Altura fixa */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Lista de Serviços */
+.services-list h2 {
+    color: var(--dourado);
+    border-left: 4px solid var(--dourado);
+    padding-left: 10px;
+    margin-top: 25px;
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.service-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 10px;
+    border-bottom: 1px solid var(--cinza-claro);
+    cursor: pointer;
+    transition: background-color 0.2s;
+    border-radius: 5px;
+}
+
+.service-item.selected {
+    background-color: rgba(201, 160, 60, 0.1);
+    border: 1px solid var(--dourado);
+    margin-left: -10px;
+    margin-right: -10px;
+}
+
+.service-name {
+    font-weight: 600;
+}
+
+.service-details {
+    color: var(--dourado);
+    font-weight: 400;
+}
+
+/* Botão Flutuante (Genérico) */
+.next-button {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 370px; /* Limite de largura (390px - 2*10px padding) */
+    padding: 15px 20px;
+    background-color: var(--dourado);
+    color: var(--fundo-preto);
+    border: none;
+    border-radius: 25px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+    z-index: 1001;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.next-button.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.next-button:not(.hidden) {
+    opacity: 1;
+    visibility: visible;
+}
+
+.next-count {
+    background-color: var(--fundo-preto);
+    color: var(--dourado);
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 14px;
+}
+
+/* =================================================== */
+/* == ESTILOS DOS MODAIS (Genérico) == */
+/* =================================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--fundo-preto);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    z-index: 2000;
+    overflow-y: auto;
+}
+
+.modal-overlay.hidden {
+    display: none !important;
+}
+
+.modal-overlay .page-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%; /* Garante que ocupe a tela toda */
+}
+
+/* =================================================== */
+/* == ESTILOS DO MODAL 1: PRÓXIMO == */
+/* =================================================== */
+
+.selection-list {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding: 0 20px;
+}
+
+.selection-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border: 1px solid var(--cinza-borda);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.selection-item .profile-photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    object-fit: cover;
+}
+.selection-item.selected {
+    background-color: var(--cinza-card);
+}
+.selection-item.selected .profile-photo {
+    border-color: var(--dourado);
+}
+.selection-item.selected span {
+    color: var(--dourado);
+    font-weight: 600;
+}
+
+.time-slot-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding: 0 20px;
+}
+.time-slot {
+    padding: 10px 15px;
+    border: 1px solid var(--cinza-borda);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+.time-slot.selected {
+    background-color: var(--dourado);
+    color: var(--fundo-preto);
+    border-color: var(--dourado);
+    font-weight: 600;
+}
+
+/* Botão Flutuante 2 (Próximo) */
+#nextButtonProximo {
+    z-index: 2002; /* Acima do conteúdo do modal */
+}
+
+/* =================================================== */
+/* == ESTILOS DO MODAL 2: AGENDAR (Ref Agendar.png) == */
+/* =================================================== */
+
+/* Cabeçalho (Logo + Nome) */
+.popup-header {
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    background-color: var(--fundo-preto);
+    border-bottom: 1px solid var(--cinza-borda);
+    gap: 12px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+.header-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--dourado);
+}
+.header-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--branco);
+    margin: 0;
+}
+
+/* Banner com Imagem de Fundo */
+.title-banner {
+    position: relative;
+    height: 120px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 20px;
+}
+.banner-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+}
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(180deg, rgba(15, 15, 15, 0.5) 0%, rgba(15, 15, 15, 1) 100%);
+    z-index: 2;
+}
+.close-button {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--cinza-borda);
+    color: var(--branco);
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.section-title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--dourado);
+    margin: 0;
+    z-index: 3;
+}
+
+/* Conteúdo Principal (Scrollável) */
+.main-content {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 20px;
+    padding-bottom: 120px; /* Espaço para o rodapé fixo */
+}
+
+/* Bloco de Informações da Barbearia */
+.barberia-info-block {
+    background-color: var(--cinza-card);
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+.barberia-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.profile-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid var(--dourado);
+    object-fit: cover;
+    margin-right: 15px;
+}
+.address-details {
+    font-size: 14px;
+    color: var(--branco);
+    flex-grow: 1;
+}
+.address-details p { margin: 0; line-height: 1.4; }
+.address-details p:first-child { font-weight: 600; }
+.location-icon {
+    color: var(--fundo-preto);
+    background-color: var(--dourado);
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 50%;
+    margin-left: 10px;
+    transform: rotate(45deg);
+}
+.success-message {
+    color: var(--verde-sucesso);
+    text-align: center;
+    padding: 10px;
+    border-radius: 20px;
+    font-weight: 600;
+    border: 1px solid var(--verde-sucesso);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Lista de ITENS */
+.items-list h3 {
+    color: var(--dourado);
+    border-bottom: 2px solid var(--dourado);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    text-transform: uppercase;
+}
+.item-card {
+    background-color: var(--cinza-card);
+    border-radius: 6px;
+    margin-bottom: 15px;
+    padding: 12px;
+    border-top: 3px solid var(--dourado);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+.item-details { display: flex; flex-direction: column; }
+.item-name { font-size: 16px; font-weight: 600; color: var(--branco); }
+.item-time-prof { font-size: 13px; color: #aaa; margin-top: 5px; line-height: 1.5; }
+.item-price { font-size: 16px; font-weight: 700; color: var(--branco); margin-left: 10px; }
+
+/* Rodapé de Pagamento (Fixo no Modal) */
+.payment-footer {
+    padding: 15px 20px 20px;
+    background-color: var(--fundo-preto);
+    border-top: 1px solid var(--cinza-borda);
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
+    /* Fixa o rodapé no container do modal */
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: 390px; /* Garante que não ultrapasse o container */
+    box-sizing: border-box; 
+}
+.payment-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+.total-label { color: var(--branco); }
+.total-amount { color: var(--dourado); }
+.payment-note { font-size: 12px; color: #888; text-align: center; margin: 0; }

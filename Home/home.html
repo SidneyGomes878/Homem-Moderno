@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Homem Moderno</title>
+    <link rel="stylesheet" href="home.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="home-wrapper" id="homeWrapper">
+        <div class="header-container">
+            <header>
+                <h1 class="barber-name">Homem Moderno</h1>
+                <i class="fas fa-user-circle user-icon"></i>
+            </header>
+            <div class="search-container">
+                <input type="text" placeholder="Buscar Serviços" class="search-input">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <div class="banner-slider">
+                <img src="imgHome/banner1.png" alt="Interior da Barbearia" 
+                style="width:100%; object-fit: cover;">
+            </div>
+
+            <nav class="tabs-nav">
+                <a href="#" class="tab active">Serviços</a>
+                <a href="#" class="tab">Produtos</a>
+                <a href="#" class="tab">Agendamentos</a>
+            </nav>
+
+            <div class="quick-links">
+                <div class="link-item"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></div>
+                <div class="link-item"><i class="fab fa-instagram"></i><span>Instagram</span></div>
+                <div class="link-item"><i class="fas fa-map-marker-alt"></i><span>Mapa</span></div>
+                <div class="link-item"><i class="fas fa-clock"></i><span>Horário</span></div>
+            </div>
+
+            <section class="services-list">
+                <h2>Cortes</h2>
+                <div class="service-item" data-price="30.00" onclick="toggleService(this, 'Corte Social')">
+                    <span class="service-name">Corte Social</span>
+                    <span class="service-details">40min – R$30,00</span>
+                </div>
+                <div class="service-item" data-price="35.00" onclick="toggleService(this, 'Corte Degradê')">
+                    <span class="service-name">Corte Degradê</span>
+                    <span class="service-details">45min – R$35,00</span>
+                </div>
+                <h2>Adicionais</h2>
+                <div class="service-item" data-price="20.00" onclick="toggleService(this, 'Barba Completa')">
+                    <span class="service-name">Barba Completa</span>
+                    <span class="service-details">30min – R$20,00</span>
+                </div>
+                 <div class="service-item" data-price="15.00" onclick="toggleService(this, 'Sobrancelha')">
+                    <span class="service-name">Sobrancelha</span>
+                    <span class="service-details">15min – R$15,00</span>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <button class="next-button" id="nextButtonHome" onclick="openProximoModal()">
+        <span class="next-title">Próximo</span>
+        <span class="next-count" id="nextCountHome">0 selecionados</span>
+    </button>
+
+
+    <div class="modal-overlay hidden" id="proximoModal">
+        <div class="page-container">
+            <header class="popup-header">
+                <button class="close-button" onclick="closeProximoModal()">
+                    <i class="fas fa-arrow-left"></i> </button>
+                <h1 class="header-title">Homem Moderno</h1>
+            </header>
+
+            <main class="main-content">
+                <h2 class="section-title">Escolha o Profissional</h2>
+                
+                <div class="selection-list" id="professionalList">
+                    <div class="selection-item" onclick="selectProfessional(this, 'Pedro')">
+                        <img src="imgHome/Pedro.jpg" alt="Pedro" class="profile-photo">
+                        <span>Pedro</span>
+                    </div>
+                    <div class="selection-item" onclick="selectProfessional(this, 'Lucas')">
+                        <img src="imgHome/Lucas.jpg" alt="Lucas" class="profile-photo">
+                        <span>Lucas</span>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Escolha o Horário</h2>
+                
+                <div class="time-slot-list" id="timeList">
+                    <div class="time-slot" onclick="selectTime(this, '16:00')">16:00</div>
+                    <div class="time-slot" onclick="selectTime(this, '16:30')">16:30</div>
+                    <div class="time-slot" onclick="selectTime(this, '17:00')">17:00</div>
+                </div>
+            </main>
+            
+            <button class="next-button hidden" id="nextButtonProximo" onclick="openAgendarModal()">
+                <span class="next-title">Próximo</span>
+                <span class="next-count" id="nextCountProximo">Selecione</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="modal-overlay hidden" id="agendarModal">
+        <div class="page-container">
+            <header class="popup-header">
+                <img src="imgHome/logo.png" alt="Logo Homem Moderno" class="header-logo">
+                <h1 class="header-title">Homem Moderno</h1>
+            </header>
+
+            <div class="title-banner">
+                <img src="imgHome/banner3.png" alt="Interior da Barbearia" class="banner-bg">
+                <div class="banner-overlay"></div>
+                
+                <button class="close-button" onclick="closeAgendarModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+                <h2 class="section-title">Detalhes do agendamento</h2>
+            </div>
+
+            <main class="main-content">
+                
+                <div class="barberia-info-block">
+                    <div class="barberia-header">
+                        <img src="imgHome/logo.png" alt="Perfil" class="profile-photo">
+                        <div class="address-details">
+                            <p>Homem Moderno</p>
+                            <p>Avenida Joaquim Ribeiro, 2531</p>
+                        </div>
+                        <i class="fas fa-paper-plane location-icon"></i>
+                    </div>
+                    <div class="success-message">
+                        <i class="fas fa-check-circle"></i>
+                        <span>Seu horário foi agendado com sucesso!</span>
+                    </div>
+                </div>
+
+                <section class="items-list" id="modalItemsList">
+                    <h3>ITENS</h3>
+                    </section>
+            </main>
+
+            <footer class="payment-footer">
+                <div class="payment-details">
+                    <span class="total-label">Total</span>
+                    <span class="total-amount" id="modalTotalAmount">R$0,00</span>
+                </div>
+                <p class="payment-note">Este estabelecimento não aceita pagamento online.</p>
+            </footer>
+
+        </div>
+    </div>
+
+    <script src="home.js"></script>
+</body>
+</html>
