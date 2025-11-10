@@ -1,0 +1,214 @@
+/* =================================================== */
+/* == GERAL E VARIÁVEIS (TEMA) == */
+/* =================================================== */
+:root {
+    --fundo-preto: #0F0F0F;
+    --dourado: #C6A55C;
+    --branco: #FFFFFF;
+    --cinza-card: #1C1C1E; 
+    --cinza-borda: #2C2C2E;
+    --cinza-claro: #333; 
+}
+
+body {
+    background-color: var(--fundo-preto);
+    color: var(--branco);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+body > div {
+    width: 100%;
+    max-width: 390px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: var(--fundo-preto);
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+/* =================================================== */
+/* == ESTILOS DA PÁGINA (Layout da Home) == */
+/* =================================================== */
+
+.home-wrapper {
+    padding-bottom: 80px; 
+    box-sizing: border-box; 
+}
+
+/* Header e Busca */
+.header-container {
+    background-color: var(--fundo-preto);
+    padding: 20px 20px 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+.barber-name { font-size: 24px; font-weight: 700; color: var(--dourado); }
+.user-icon { font-size: 28px; color: var(--branco); }
+.search-container { position: relative; }
+.search-input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    border: 1px solid var(--cinza-claro);
+    border-radius: 25px;
+    background-color: var(--cinza-claro);
+    color: var(--branco);
+    outline: none;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+.search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--dourado);
+    pointer-events: none;
+}
+
+/* Banner e Conteúdo */
+.banner-slider {
+    height: 150px;
+    background-color: #222;
+    margin: 0 20px 20px;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative; 
+}
+.content-container { padding: 0 20px; }
+
+/* Carrossel */
+.slider-track {
+    display: flex;
+    width: 300%; 
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+.slide {
+    width: 33.3333%; 
+    height: 100%;
+}
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+}
+.slider-nav {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 5;
+}
+.slider-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5); 
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.slider-dot.active {
+    background-color: var(--dourado); 
+}
+
+
+/* Abas de Navegação */
+.tabs-nav {
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 1px solid var(--cinza-claro);
+    margin-bottom: 20px;
+}
+.tab {
+    padding: 10px 0;
+    color: var(--branco);
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 2px solid transparent;
+    flex-grow: 1;
+    text-align: center;
+    cursor: pointer;
+}
+.tab.active {
+    color: var(--dourado);
+    border-bottom-color: var(--dourado);
+}
+
+/* Ícones Circulares */
+.quick-links {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+}
+.link-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 14px;
+    color: var(--dourado);
+    text-decoration: none;
+}
+.link-item i {
+    font-size: 24px;
+    background-color: var(--cinza-claro);
+    border-radius: 50%;
+    padding: 15px;
+    margin-bottom: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+    width: 30px; 
+    height: 30px; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* =================================================== */
+/* == ESTILOS DA ABA AGENDAMENTOS (CONTEÚDO DA PÁGINA) == */
+/* =================================================== */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-top: 40px; /* Ajustado para menos espaço que o anterior */
+    text-align: center;
+    color: #888;
+}
+.empty-icon {
+    font-size: 60px;
+    color: var(--cinza-claro);
+    margin-bottom: 20px;
+}
+.empty-state h3 {
+    color: var(--branco);
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.empty-state p {
+    margin: 0;
+    margin-bottom: 25px;
+}
+.cta-button {
+    background-color: var(--dourado);
+    color: var(--fundo-preto);
+    border: none;
+    border-radius: 25px;
+    padding: 15px 30px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+}

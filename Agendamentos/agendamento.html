@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meus Agendamentos - Homem Moderno</title>
+    <link rel="stylesheet" href="agendamento.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="home-wrapper" id="homeWrapper">
+        <div class="header-container">
+            <header>
+                <h1 class="barber-name">Homem Moderno</h1>
+                <i class="fas fa-user-circle user-icon"></i>
+            </header>
+            <div class="search-container">
+                <input type="text" placeholder="Buscar Serviços" class="search-input">
+                <i class="fas fa-search search-icon"></i>
+            </div>
+        </div>
+
+        <div class="content-container">
+            <div class="banner-slider" id="bannerSlider">
+                <div class="slider-track" id="sliderTrack">
+                    <div class="slide"><img src="img/banner1.png" alt="Banner 1"></div>
+                    <div class="slide"><img src="img/banner2.png" alt="Banner 2"></div>
+                    <div class="slide"><img src="img/banner3.png" alt="Banner 3"></div>
+                </div>
+                <div class="slider-nav" id="sliderNav"></div>
+            </div>
+
+            <nav class="tabs-nav">
+                <a href="../Home/index.html" class="tab" id="tab-servicos">Serviços</a>
+                <a href="#" class="tab active" id="tab-agendamentos">Agendamentos</a>
+            </nav>
+
+            <div class="quick-links">
+                <div class="link-item"><i class="fab fa-whatsapp"></i><span>WhatsApp</span></div>
+                <div class="link-item"><i class="fab fa-instagram"></i><span>Instagram</span></div>
+                <div class="link-item"><i class="fas fa-map-marker-alt"></i><span>Mapa</span></div>
+                <div class="link-item"><i class="fas fa-clock"></i><span>Horário</span></div>
+            </div>
+            
+            <div class="tab-content active" id="agendamentosContent">
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times empty-icon"></i>
+                    <h3>Nenhum agendamento</h3>
+                    <p>Você ainda não possui horários marcados.</p>
+                    <button class="cta-button" onclick="goToServicosTab()">Agendar agora</button>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <script src="agendamento.js"></script>
+</body>
+</html>

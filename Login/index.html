@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Arábia Barber</title>
+    <link rel="stylesheet" href="Styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="login-container">
+        <header class="login-header">
+            <a href="../Home/index.html" class="skip-link">pular</a>
+        </header>
+
+        <main class="login-main">
+            <div class="logo-wrapper">
+                <img src="img/logo 8.png" alt="Arábia Barber Logo" class="login-logo">
+            </div>
+
+            <h1 class="login-title">
+                Bem-vindo a <span>Arábia Barber</span>
+            </h1>
+
+            <form class="login-form" id="loginForm">
+                <div class="input-group">
+                    <input type="text" id="user-name" placeholder="Seu nome" required>
+                </div>
+                
+                <div class="input-group">
+                    <input type="password" id="user-password" placeholder="Seu numero" required>
+                    <i class="fas fa-eye-slash input-icon" id="togglePassword"></i>
+                </div>
+
+                <div class="options-row">
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="remember-me">
+                        <span class="slider"></span>
+                        Lembrar senha
+                    </label>
+                    <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+                </div>
+
+                <button type="submit" class="submit-btn">Entrar</button>
+            </form>
+        </main>
+
+        <footer class="login-footer">
+            <p class="register-link">
+                Ainda não possui conta? <a href="#">Registre-se agora</a>
+            </p>
+            <p class="legal-text">
+                Ao continuar, você aceita os nossos <a href="#">Termos de Serviços</a> e <a href="#">Política de privacidade</a>
+            </p>
+        </footer>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
