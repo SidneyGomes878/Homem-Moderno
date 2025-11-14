@@ -1,13 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Inicializa o botão desabilitado
+    // Esconde o botão "Pagar agora" no início
     updateContinueButton();
 });
 
 let selectedMethod = null;
 
-// Cache dos elementos das "caixinhas"
+// Cache dos elementos
 const pixDetails = document.getElementById('pix-details');
 const cartaoDetails = document.getElementById('cartao-details');
+const payNowButton = document.getElementById('payNowButton'); // ID do novo botão flutuante
 
 function selectPayment(element, method) {
     // Limpa seleção anterior
@@ -30,16 +31,16 @@ function selectPayment(element, method) {
         cartaoDetails.classList.remove('hidden');
     }
 
-    // Habilita o botão
+    // Mostra o botão flutuante
     updateContinueButton();
 }
 
 function updateContinueButton() {
-    const continueButton = document.getElementById('continueButton');
+    // Controla a VISIBILIDADE (hidden) em vez de 'disabled'
     if (selectedMethod) {
-        continueButton.disabled = false;
+        payNowButton.classList.remove('hidden');
     } else {
-        continueButton.disabled = true;
+        payNowButton.classList.add('hidden');
     }
 }
 
