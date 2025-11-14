@@ -414,7 +414,6 @@ header {
 
 #nextButtonProximo {
     z-index: 2002; 
-    /* Herda .next-button (position: fixed, bottom: 30px) */
 }
 
 /* =================================================== */
@@ -651,14 +650,14 @@ header {
     max-width: 390px; 
     box-sizing: border-box; 
     /* Aumenta o padding inferior para subir o conteúdo */
-    padding-bottom: 35px; 
+    padding-bottom: 30px; 
 }
 .payment-details {
     display: flex;
     justify-content: space-between;
     font-size: 18px;
     font-weight: 700;
-    margin-bottom: 12px; /* Reduzido margin */
+    margin-bottom: 15px; /* Aumentado espaço */
 }
 .total-label { color: var(--branco); }
 .total-amount { color: var(--dourado); }
