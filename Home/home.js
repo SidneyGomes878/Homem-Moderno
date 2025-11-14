@@ -15,6 +15,9 @@ const homeWrapper = document.getElementById('homeWrapper');
 const nextButtonHome = document.getElementById('nextButtonHome');
 const nextCountHome = document.getElementById('nextCountHome');
 const tabServicos = document.getElementById('tab-serviços');
+const tabAgendamentos = document.getElementById('tab-agendamentos');
+const contentServicos = document.getElementById('servicosContent');
+const contentAgendamentos = document.getElementById('agendamentosContent');
 const sliderTrack = document.getElementById('sliderTrack');
 const sliderNav = document.getElementById('sliderNav');
 const slides = sliderTrack ? sliderTrack.querySelectorAll('.slide') : [];
@@ -30,6 +33,9 @@ const agendarModal = document.getElementById('agendarModal');
 const modalItemsList = document.getElementById('modalItemsList');
 const modalTotalAmountSpan = document.getElementById('modalTotalAmount');
 
+// Cache dos novos elementos do Modal Agendar
+const successMessage = document.getElementById('successMessage');
+const payButton = document.getElementById('payButton');
 
 // ===================================================
 // == LÓGICA DO CARROSSEL (BANNER)
@@ -47,13 +53,36 @@ function initCarousel() { if (slides.length > 0) { createDots(); goToSlide(0); s
 // == LÓGICA DA TELA HOME (ETAPA 1)
 // ===================================================
 
-// Função para o link "Adicionar mais itens"
+function showTab(tabName, element) {
+    if (tabName === 'agendamentos') {
+        if (userAppointments.length > 0) {
+            openAgendarModal(true); 
+            return; 
+        }
+    }
+    contentServicos.classList.add('hidden');
+    contentAgendamentos.classList.add('hidden');
+    
+    // Garante que tabServicos e tabAgendamentos existam antes de usar
+    if(tabServicos) tabServicos.classList.remove('active');
+    if(tabAgendamentos) tabAgendamentos.classList.remove('active');
+
+    if (tabName === 'servicos') {
+        if(contentServicos) contentServicos.classList.remove('hidden');
+    } else if (tabName === 'agendamentos') {
+        if(contentAgendamentos) contentAgendamentos.classList.remove('hidden');
+    }
+    if (element) {
+        element.classList.add('active');
+    }
+}
+
 function goToHome() {
     closeAgendarModal();
 }
 
 function goToServicosTab() {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showTab('servicos', tabServicos);
 }
 
 function toggleItem(element, itemName, type) {
@@ -82,12 +111,9 @@ function updateHomeNextButton() {
 function handleNextStep() {
     if (allSelections.length === 0) return;
     const hasServices = allSelections.some(item => item.type === 'service');
-    
     if (hasServices) {
-        // Se tem serviços, vai para a escolha de profissional (Modal 1)
         openProximoModal();
     } else {
-        // Se só tem produtos, verifica login e vai para o resumo (Modal 2)
         checkLoginAndProceed();
     }
 }
@@ -99,8 +125,6 @@ function checkLoginAndProceed() {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
 
     if (isLoggedIn === 'true') {
-        // Se logado, abre o modal de detalhes (Agendar)
-        // false indica que é um novo agendamento, não visualização
         openAgendarModal(false);
     } else {
         alert("Você precisa fazer login para continuar o agendamento.");
@@ -148,7 +172,35 @@ function updateProximoNextButton() { if (selectedProfessional && selectedTime) {
 // == LÓGICA DO MODAL "AGENDAR" (ETAPA 3)
 // ===================================================
 
+// NOVO: Função de pagamento
+function processPayment() {
+    // 1. Mostra a mensagem de sucesso
+    if(successMessage) {
+        successMessage.classList.remove('hidden');
+    }
+
+    // 2. Esconde o botão de pagar
+    if(payButton) {
+        payButton.classList.add('hidden');
+    }
+    
+    // 3. (Simulação) Fecha o modal e reseta tudo após 3 segundos
+    setTimeout(() => {
+        closeAgendarModal();
+    }, 3000); // Espera 3 segundos
+}
+
+
 function openAgendarModal(isViewing = false) { 
+    
+    // Garante que a UI esteja no estado inicial
+    if(successMessage) {
+        successMessage.classList.add('hidden');
+    }
+    if(payButton) {
+        payButton.classList.remove('hidden');
+    }
+
     if (isViewing) {
         currentModalData = userAppointments[0];
     } else {
@@ -157,7 +209,10 @@ function openAgendarModal(isViewing = false) {
             professional: selectedProfessional,
             time: selectedTime
         };
-        userAppointments = [newAppointment]; 
+        // Salva no "BD" (se for um novo agendamento, não só visualização)
+        if (!isViewing) {
+            userAppointments = [newAppointment]; 
+        }
         currentModalData = newAppointment;
     }
     
@@ -180,18 +235,30 @@ function closeAgendarModal() {
 
     document.querySelectorAll('.service-item.selected').forEach(item => item.classList.remove('selected'));
     
-    goToServicosTab();
+    // Se o usuário não tiver agendamentos, volta para "Serviços"
+    // Se tiver, deixa na aba "Agendamentos" (para ele ver o que acabou de agendar)
+    if(userAppointments.length === 0) {
+        goToServicosTab();
+    } else {
+        showTab('agendamentos', tabAgendamentos);
+    }
 }
 
 function removeItem(index) {
     if (currentModalData && currentModalData.selections) {
+        const itemToRemove = currentModalData.selections[index];
+        // Remove do array de dados do modal atual
         currentModalData.selections.splice(index, 1);
+        
+        // Remove do array de seleção global (carrinho)
+        allSelections = allSelections.filter(item => item.name !== itemToRemove.name);
         
         if (userAppointments.includes(currentModalData)) {
              userAppointments[0] = currentModalData;
         }
 
         loadAgendarSummary();
+        updateHomeNextButton(); // Atualiza o contador do botão flutuante da Home
 
         if (currentModalData.selections.length === 0) {
             userAppointments = []; 
@@ -208,8 +275,13 @@ function loadAgendarSummary() {
     if (!currentModalData || !currentModalData.selections || currentModalData.selections.length === 0) {
         modalItemsList.insertAdjacentHTML('beforeend', '<p style="color:#888; text-align: center;">Nenhum item selecionado.</p>');
         modalTotalAmountSpan.textContent = `R$0,00`;
+        // Esconde o botão de pagar se não houver itens
+        if(payButton) payButton.classList.add('hidden');
         return;
     }
+
+    // Garante que o botão de pagar está visível se houver itens
+    if(payButton) payButton.classList.remove('hidden');
 
     currentModalData.selections.forEach((item, index) => {
         const priceFormatted = `R$${item.price.toFixed(2).replace('.', ',')}`;
@@ -247,6 +319,6 @@ function loadAgendarSummary() {
 document.addEventListener('DOMContentLoaded', () => {
     updateHomeNextButton();
     initCarousel(); 
-    showTab('servicos', document.getElementById('tab-serviços'));
+    showTab('serviços', document.getElementById('tab-serviços'));
     initSearch();
 });

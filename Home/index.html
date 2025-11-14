@@ -36,68 +36,73 @@
             </div>
 
             <nav class="tabs-nav">
-                <a href="#" class="tab active" id="tab-serviços">Serviços</a>
+                <a href="#" class="tab active" id="tab-serviços" onclick="showTab('servicos', this)">Serviços</a>
                 <a href="../Agendamentos/agendamento.html" class="tab" id="tab-agendamentos">Agendamentos</a>
             </nav>
 
-            <div class="quick-links">
-                <a href="https://wa.me/5511999999999" target="_blank" class="link-item">
-                    <i class="fab fa-whatsapp"></i>
-                    <span>WhatsApp</span>
-                </a>
-
-                <a href="https://www.instagram.com/" target="_blank" class="link-item"> 
-                    <i class="fab fa-instagram"></i>
-                    <span>Instagram</span>
-                </a> 
-
-                <a href="https://www.google.com/maps" target="_blank" class="link-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Mapa</span>
-                </a>
-
-                <a href="" target="_blank" class="link-item">
-                    <i class="fas fa-clock"></i>
-                    <span>Horário</span>
-                 </a>
-            </div>
-        
-            <section class="services-list">
-                <h2>Cortes</h2>
-                <div class="service-item" data-price="30.00" onclick="toggleItem(this, 'Corte Social', 'service')">
-                    <span class="service-name">Corte Social</span>
-                    <span class="service-details">40min – R$30,00</span>
+            <div class="tab-content active" id="servicosContent">
+                <div class="quick-links">
+                    <a href="https://wa.me/5511999999999" target="_blank" class="link-item">
+                        <i class="fab fa-whatsapp"></i>
+                        <span>WhatsApp</span>
+                    </a>
+                    <a href="https://www.instagram.com/" target="_blank" class="link-item"> 
+                        <i class="fab fa-instagram"></i>
+                        <span>Instagram</span>
+                    </a> 
+                    <a href="https://www.google.com/maps" target="_blank" class="link-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Mapa</span>
+                    </a>
+                    <a href="#" target="_blank" class="link-item"> <i class="fas fa-clock"></i>
+                        <span>Horário</span>
+                    </a>
                 </div>
-                <div class="service-item" data-price="35.00" onclick="toggleItem(this, 'Corte Degradê', 'service')">
-                    <span class="service-name">Corte Degradê</span>
-                    <span class="service-details">45min – R$35,00</span>
-                </div>
-                
-                <h2>Adicionais</h2>
-                <div class="service-item" data-price="20.00" onclick="toggleItem(this, 'Barba Completa', 'service')">
-                    <span class="service-name">Barba Completa</span>
-                    <span class="service-details">30min – R$20,00</span>
-                </div>
-                 <div class="service-item" data-price="15.00" onclick="toggleItem(this, 'Sobrancelha', 'service')">
-                    <span class="service-name">Sobrancelha</span>
-                    <span class="service-details">15min – R$15,00</span>
-                </div>
-
-                <h2>Produtos</h2>
-                <div class="service-item" data-price="20.00" onclick="toggleItem(this, 'Pomada de Fixação', 'product')">
-                    <span class="service-name">Pomada de Fixação</span>
-                    <span class="service-details">R$20,00</span>
-                </div>
-                <div class="service-item" data-price="30.00" onclick="toggleItem(this, 'Loção pós Barba', 'product')">
-                    <span class="service-name">Loção pós Barba</span>
-                    <span class="service-details">R$30,00</span>
-                </div>
-                 <div class="service-item" data-price="20.00" onclick="toggleItem(this, 'Minoxidil Original', 'product')">
-                    <span class="service-name">Minoxidil Original</span>
-                    <span class="service-details">R$20,00</span>
-                </div>
-            </section>
             
+                <section class="services-list">
+                    <h2>Cortes</h2>
+                    <div class="service-item" data-price="30.00" onclick="toggleItem(this, 'Corte Social', 'service')">
+                        <span class="service-name">Corte Social</span>
+                        <span class="service-details">40min – R$30,00</span>
+                    </div>
+                    <div class="service-item" data-price="35.00" onclick="toggleItem(this, 'Corte Degradê', 'service')">
+                        <span class="service-name">Corte Degradê</span>
+                        <span class="service-details">45min – R$35,00</span>
+                    </div>
+                    
+                    <h2>Adicionais</h2>
+                    <div class="service-item" data-price="20.00" onclick="toggleItem(this, 'Barba Completa', 'service')">
+                        <span class="service-name">Barba Completa</span>
+                        <span class="service-details">30min – R$20,00</span>
+                    </div>
+                     <div class="service-item" data-price="15.00" onclick="toggleItem(this, 'Sobrancelha', 'service')">
+                        <span class="service-name">Sobrancelha</span>
+                        <span class="service-details">15min – R$15,00</span>
+                    </div>
+
+                    <h2>Produtos</h2>
+                    <div class="service-item" data-price="20.00" onclick="toggleItem(this, 'Pomada de Fixação', 'product')">
+                        <span class="service-name">Pomada de Fixação</span>
+                        <span class="service-details">R$20,00</span>
+                    </div>
+                    <div class="service-item" data-price="30.00" onclick="toggleItem(this, 'Loção pós Barba', 'product')">
+                        <span class="service-name">Loção pós Barba</span>
+                        <span class="service-details">R$30,00</span>
+                    </div>
+                     <div class="service-item" data-price="20.00" onclick="toggleItem(this, 'Minoxidil Original', 'product')">
+                        <span class="service-name">Minoxidil Original</span>
+                        <span class="service-details">R$20,00</span>
+                    </div>
+                </section>
+            </div> <div class="tab-content hidden" id="agendamentosContent">
+                <div class="empty-state">
+                    <i class="fas fa-calendar-times empty-icon"></i>
+                    <h3>Nenhum agendamento</h3>
+                    <p>Você ainda não possui horários marcados.</p>
+                    <button class="cta-button" onclick="goToServicosTab()">Agendar agora</button>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -166,7 +171,7 @@
                         </div>
                         <i class="fas fa-paper-plane location-icon"></i>
                     </div>
-                    <div class="success-message">
+                    <div class="success-message hidden" id="successMessage">
                         <i class="fas fa-check-circle"></i>
                         <span>Seu horário foi agendado com sucesso!</span>
                     </div>
@@ -180,12 +185,13 @@
                 </a>
 
             </main>
+            
             <footer class="payment-footer">
                 <div class="payment-details">
                     <span class="total-label">Total</span>
                     <span class="total-amount" id="modalTotalAmount">R$0,00</span>
                 </div>
-                <p class="payment-note">Este estabelecimento não aceita pagamento online.</p>
+                <button class="submit-btn-pay" id="payButton" onclick="processPayment()">Pagar agora</button>
             </footer>
         </div>
     </div>

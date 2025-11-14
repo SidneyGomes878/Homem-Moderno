@@ -242,7 +242,7 @@ header {
 /* =================================================== */
 .next-button {
     position: fixed;
-    bottom: 30px; /* Aumentado de 20px para 30px (mais para cima) */
+    bottom: 30px; /* Aumentado de 20px para 30px */
     left: 50%;
     transform: translateX(-50%);
     width: 90%;
@@ -341,13 +341,12 @@ header {
 /* == ESTILOS DO MODAL 1: PRÓXIMO == */
 /* =================================================== */
 
-/* CORREÇÃO: Garante que o conteúdo do modal cresça e tenha scroll */
 #proximoModal .main-content {
     flex-grow: 1; 
     overflow-y: auto; 
     padding: 20px;
     padding-top: 30px; 
-    padding-bottom: 100px; /* Espaço para o botão flutuante */
+    padding-bottom: 100px;
 }
 #proximoModal .section-title {
     text-align: center;
@@ -416,15 +415,16 @@ header {
     font-weight: 600;
 }
 
-/* CORREÇÃO: Botão do Modal 1 usa .next-button (position: fixed) */
 #nextButtonProximo {
     z-index: 2002; 
+    /* Herda .next-button (position: fixed, bottom: 30px) */
 }
 
 /* =================================================== */
 /* == ESTILOS DO MODAL 2: AGENDAR (Ref Agendar.png) == */
 /* =================================================== */
 
+/* CORREÇÃO: Header genérico do Modal */
 .popup-header {
     display: flex;
     align-items: center;
@@ -441,12 +441,12 @@ header {
     position: relative; 
 }
 
+/* CORREÇÃO: Botão de fechar/voltar genérico */
 .close-button {
     position: absolute;
     top: 50%;
     left: 15px; 
     transform: translateY(-50%);
-
     background: rgba(0, 0, 0, 0.5);
     border: 1px solid var(--cinza-borda);
     color: var(--branco);
@@ -461,16 +461,19 @@ header {
     align-items: center;
 }
 
+/* CORREÇÃO: Título do Header genérico (centralizado) */
 .header-title {
     font-size: 18px;
     font-weight: 600;
     color: var(--branco);
     margin: 0;
     text-align: center;
+    /* Padds para compensar o botão absoluto */
     padding-left: 40px; 
     padding-right: 40px;
 }
 
+/* Específico para Modal Agendar (com logo) */
 #agendarModal .popup-header {
     justify-content: center; 
     gap: 12px;
@@ -480,7 +483,7 @@ header {
     padding-right: 0;
 }
 #agendarModal .close-button {
-    z-index: 5; 
+    z-index: 5; /* Fica sobre o banner */
 }
 
 
@@ -520,6 +523,7 @@ header {
     z-index: 2;
 }
 
+/* Título (Detalhes do agendamento) */
 #agendarModal .section-title {
     text-align: center;
     font-size: 22px;
@@ -529,6 +533,7 @@ header {
     z-index: 3;
 }
 
+/* CORREÇÃO: Conteúdo principal com Flexbox e Scroll */
 .main-content {
     flex-grow: 1; 
     overflow-y: auto; 
@@ -607,6 +612,7 @@ header {
 .item-name { font-size: 16px; font-weight: 600; color: var(--branco); }
 .item-time-prof { font-size: 13px; color: #aaa; margin-top: 5px; line-height: 1.5; }
 
+/* ATUALIZADO: Container de Preço e Lixeira */
 .item-price-container {
     display: flex;
     align-items: flex-start; 
@@ -630,6 +636,7 @@ header {
     color: #ff6b6b; 
 }
 
+/* ATUALIZADO: Link "Adicionar mais itens" */
 .add-more-items {
     color: var(--dourado);
     text-decoration: none;
@@ -640,8 +647,9 @@ header {
 }
 
 
+/* CORREÇÃO: Rodapé do Modal Agendar (Sticky) */
 .payment-footer {
-    padding: 15px 20px 20px;
+    padding: 15px 20px;
     background-color: var(--fundo-preto);
     border-top: 1px solid var(--cinza-borda);
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
@@ -652,16 +660,34 @@ header {
     width: 100%;
     max-width: 390px; 
     box-sizing: border-box; 
-    /* CORREÇÃO: Adiciona padding-bottom para a "safe area" do celular */
-    padding-bottom: 30px; 
+    padding-bottom: 30px; /* Espaço para a barra do celular */
 }
 .payment-details {
     display: flex;
     justify-content: space-between;
     font-size: 18px;
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 15px; /* Aumentado espaço */
 }
 .total-label { color: var(--branco); }
 .total-amount { color: var(--dourado); }
-.payment-note { font-size: 12px; color: #888; text-align: center; margin: 0; }
+
+/* REMOVIDO: .payment-note */
+
+/* NOVO: Botão "Pagar agora" */
+.submit-btn-pay {
+    width: 100%;
+    padding: 16px;
+    background-color: var(--dourado);
+    color: var(--fundo-preto);
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.submit-btn-pay:active {
+    opacity: 0.9;
+}
