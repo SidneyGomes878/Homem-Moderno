@@ -28,9 +28,9 @@
         <div class="content-container">
             <div class="banner-slider" id="bannerSlider">
                 <div class="slider-track" id="sliderTrack">
-                    <div class="slide"><img src="img/banner1.png" alt="Banner 1"></div>
-                    <div class="slide"><img src="img/banner2.png" alt="Banner 2"></div>
-                    <div class="slide"><img src="img/banner3.png" alt="Banner 3"></div>
+                    <div class="slide"><img src="../imgHome/banner-01.png" alt="Banner 1"></div>
+                    <div class="slide"><img src="../imgHome/banner-02.png" alt="Banner 2"></div>
+                    <div class="slide"><img src="../imgHome/banner-03.png" alt="Banner 3"></div>
                 </div>
                 <div class="slider-nav" id="sliderNav"></div>
             </div>
@@ -46,27 +46,20 @@
                     <span>WhatsApp</span>
                 </a>
 
-                <div class="link-item">
                 <a href="https://www.instagram.com/" target="_blank" class="link-item"> 
                     <i class="fab fa-instagram"></i>
                     <span>Instagram</span>
                 </a> 
 
-                </div>
-
-                <div class="link-item">
-                 <a href="https://www.google.com/maps" target="_blank" class="link-item">
+                <a href="https://www.google.com/maps" target="_blank" class="link-item">
                     <i class="fas fa-map-marker-alt"></i>
                     <span>Mapa</span>
                 </a>
-                </div>
 
-                <div class="link-item">
-                 <a href="" target="_blank" class="link-item"></a>
+                <a href="" target="_blank" class="link-item">
                     <i class="fas fa-clock"></i>
                     <span>Horário</span>
                  </a>
-                </div>
             </div>
         
             <section class="services-list">
@@ -141,7 +134,8 @@
                     <div class="time-slot" onclick="selectTime(this, '17:00')">17:00</div>
                 </div>
             </main>
-            <button class="next-button hidden" id="nextButtonProximo" onclick="openAgendarModal(false)">
+            
+            <button class="next-button hidden" id="nextButtonProximo" onclick="checkLoginAndProceed()">
                 <span class="next-title">Próximo</span>
                 <span class="next-count" id="nextCountProximo">Selecione</span>
             </button>

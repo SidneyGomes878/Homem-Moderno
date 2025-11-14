@@ -6,8 +6,6 @@ let allSelections = [];
 let selectedProfessional = null;
 let selectedTime = null;
 let userAppointments = []; 
-
-// NOVO: Variável para armazenar os dados do modal atual
 let currentModalData = {}; 
 
 // ===================================================
@@ -17,9 +15,6 @@ const homeWrapper = document.getElementById('homeWrapper');
 const nextButtonHome = document.getElementById('nextButtonHome');
 const nextCountHome = document.getElementById('nextCountHome');
 const tabServicos = document.getElementById('tab-serviços');
-const tabAgendamentos = document.getElementById('tab-agendamentos');
-const contentServicos = document.getElementById('servicosContent');
-const contentAgendamentos = document.getElementById('agendamentosContent');
 const sliderTrack = document.getElementById('sliderTrack');
 const sliderNav = document.getElementById('sliderNav');
 const slides = sliderTrack ? sliderTrack.querySelectorAll('.slide') : [];
@@ -52,37 +47,13 @@ function initCarousel() { if (slides.length > 0) { createDots(); goToSlide(0); s
 // == LÓGICA DA TELA HOME (ETAPA 1)
 // ===================================================
 
-function showTab(tabName, element) {
-    if (tabName === 'agendamentos') {
-        if (userAppointments.length > 0) {
-            openAgendarModal(true); 
-            return; 
-        }
-    }
-    contentServicos.classList.add('hidden');
-    contentAgendamentos.classList.add('hidden');
-    tabServicos.classList.remove('active');
-    tabAgendamentos.classList.remove('active');
-    if (tabName === 'servicos') {
-        contentServicos.classList.remove('hidden');
-    } else if (tabName === 'agendamentos') {
-        contentAgendamentos.classList.remove('hidden');
-    }
-    if (element) {
-        element.classList.add('active');
-    }
-}
-
-// NOVO: Função para o link "Adicionar mais itens"
+// Função para o link "Adicionar mais itens"
 function goToHome() {
     closeAgendarModal();
 }
 
-/**
- * Helper para o botão "Agendar agora"
- */
 function goToServicosTab() {
-    showTab('servicos', tabServicos);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 function toggleItem(element, itemName, type) {
@@ -111,35 +82,50 @@ function updateHomeNextButton() {
 function handleNextStep() {
     if (allSelections.length === 0) return;
     const hasServices = allSelections.some(item => item.type === 'service');
+    
     if (hasServices) {
+        // Se tem serviços, vai para a escolha de profissional (Modal 1)
         openProximoModal();
     } else {
-        openAgendarModal(false);
+        // Se só tem produtos, verifica login e vai para o resumo (Modal 2)
+        checkLoginAndProceed();
     }
 }
 
 // ===================================================
-// == LÓGICA DA BARRA DE PESQUISA (ADICIONADO)
+// == LÓGICA DE VERIFICAÇÃO DE LOGIN
+// ===================================================
+function checkLoginAndProceed() {
+    const isLoggedIn = localStorage.getItem('isLoggedIn');
+
+    if (isLoggedIn === 'true') {
+        // Se logado, abre o modal de detalhes (Agendar)
+        // false indica que é um novo agendamento, não visualização
+        openAgendarModal(false);
+    } else {
+        alert("Você precisa fazer login para continuar o agendamento.");
+        window.location.href = "../Login/index.html";
+    }
+}
+
+// ===================================================
+// == LÓGICA DA BARRA DE PESQUISA
 // ===================================================
 function initSearch() {
     const searchInput = document.querySelector('.search-input');
     if (!searchInput) return;
 
-    // Seleciona todos os itens que podem ser filtrados
     const serviceItems = document.querySelectorAll('.service-item');
 
     searchInput.addEventListener('input', (e) => {
         const filterText = e.target.value.toLowerCase().trim();
 
         serviceItems.forEach(item => {
-            // Busca o nome do serviço/produto dentro do item
             const nameElement = item.querySelector('.service-name');
             if (nameElement) {
                 const name = nameElement.textContent.toLowerCase();
-                
-                // Se o nome contém o texto digitado, mostra; senão, esconde
                 if (name.includes(filterText)) {
-                    item.style.display = ''; // Remove o 'none' (volta ao padrão flex do CSS)
+                    item.style.display = ''; 
                 } else {
                     item.style.display = 'none';
                 }
@@ -162,12 +148,7 @@ function updateProximoNextButton() { if (selectedProfessional && selectedTime) {
 // == LÓGICA DO MODAL "AGENDAR" (ETAPA 3)
 // ===================================================
 
-/**
- * Abre o modal final "Agendar".
- * (ATUALIZADO: Salva dados no currentModalData)
- */
 function openAgendarModal(isViewing = false) { 
-    
     if (isViewing) {
         currentModalData = userAppointments[0];
     } else {
@@ -187,10 +168,6 @@ function openAgendarModal(isViewing = false) {
     agendarModal.classList.remove('hidden');
 }
 
-/**
- * Fecha o modal "Agendar" e reseta o fluxo.
- * (ATUALIZADO: Limpa currentModalData)
- */
 function closeAgendarModal() {
     agendarModal.classList.add('hidden');
     homeWrapper.classList.remove('hidden'); 
@@ -198,7 +175,7 @@ function closeAgendarModal() {
     allSelections = [];
     selectedProfessional = null;
     selectedTime = null;
-    currentModalData = {}; // Limpa os dados do modal atual
+    currentModalData = {}; 
     updateHomeNextButton();
 
     document.querySelectorAll('.service-item.selected').forEach(item => item.classList.remove('selected'));
@@ -206,42 +183,28 @@ function closeAgendarModal() {
     goToServicosTab();
 }
 
-/**
- * NOVO: Remove um item da lista de resumo (Modal Agendar)
- * @param {number} index - O índice do item a ser removido
- */
 function removeItem(index) {
     if (currentModalData && currentModalData.selections) {
-        // Remove o item do array de dados do modal atual
         currentModalData.selections.splice(index, 1);
         
-        // Se este era um agendamento salvo, atualiza o "banco de dados"
         if (userAppointments.includes(currentModalData)) {
              userAppointments[0] = currentModalData;
         }
 
-        // Recarrega o resumo (que agora lê de currentModalData)
         loadAgendarSummary();
 
-        // Se o carrinho do modal ficar vazio, força o fechamento
         if (currentModalData.selections.length === 0) {
-            userAppointments = []; // Limpa o agendamento salvo
+            userAppointments = []; 
             closeAgendarModal();
         }
     }
 }
 
-
-/**
- * Carrega o resumo final no modal "Agendar".
- * (ATUALIZADO: Lê de currentModalData, adiciona ícone de lixeira)
- */
 function loadAgendarSummary() {
     let totalValue = 0;
     modalItemsList.innerHTML = '<h3>ITENS</h3>'; 
     let itemHtml = '';
 
-    // Verifica se currentModalData está preenchido
     if (!currentModalData || !currentModalData.selections || currentModalData.selections.length === 0) {
         modalItemsList.insertAdjacentHTML('beforeend', '<p style="color:#888; text-align: center;">Nenhum item selecionado.</p>');
         modalTotalAmountSpan.textContent = `R$0,00`;
@@ -260,7 +223,6 @@ function loadAgendarSummary() {
              detailsHtml = `<p class="item-time-prof">Produto</p>`;
         }
 
-        // Template ATUALIZADO com a lixeira
         itemHtml += `
             <div class="item-card" id="item-card-${index}">
                 <div class="item-details">
@@ -286,7 +248,5 @@ document.addEventListener('DOMContentLoaded', () => {
     updateHomeNextButton();
     initCarousel(); 
     showTab('servicos', document.getElementById('tab-serviços'));
-    
-    // INICIA A BARRA DE PESQUISA
     initSearch();
 });
