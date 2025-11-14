@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Homem Moderno</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="payment-container">
+        <header class="payment-header">
+            <a href="../Home/index.html?action=openAgendarModal" class="back-link">
+                <i class="fas fa-arrow-left"></i>
+            </a>
+            <h1 class="header-title">Finalizar Pagamento</h1>
+        </header>
+
+        <main class="payment-main">
+            <h2 class="section-title">Pagar com</h2>
+
+            <div class="payment-options">
+                
+                <div class="option-card" id="pix" onclick="selectPayment(this, 'pix')">
+                    <div class="option-icon">
+                        <i class="fas fa-qrcode"></i> 
+                    </div>
+                    <span>Pix</span>
+                </div>
+                
+                <div class="payment-details-box hidden" id="pix-details">
+                    <i class="fas fa-qrcode qr-code-placeholder"></i>
+                    <p class="pix-note">Escaneie o QR Code ou copie a chave</p>
+                    <button class="copy-pix-btn" onclick="copyPixKey()">
+                        Copiar Chave PIX 
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <input type="text" value="00020126... (chave fictícia) ...5303986" id="pixKeyInput" style="display: none;">
+                </div>
+
+                <div class="option-card" id="cartao" onclick="selectPayment(this, 'cartao')">
+                    <div class="option-icon">
+                        <i class="fas fa-credit-card"></i>
+                    </div>
+                    <span>Cartão de Crédito</span>
+                </div>
+
+                <div class="payment-details-box hidden" id="cartao-details">
+                    <form class="card-form">
+                        <div class="form-group">
+                            <label for="card-number">Número do Cartão</label>
+                            <input type="tel" id="card-number" class="form-input" placeholder="0000 0000 0000 0000">
+                        </div>
+                        <div class="form-group">
+                            <label for="card-name">Nome no Cartão</label>
+                            <input type="text" id="card-name" class="form-input" placeholder="Como está escrito no cartão">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="card-expiry">Validade</label>
+                                <input type="text" id="card-expiry" class="form-input" placeholder="MM/AA">
+                            </div>
+                            <div class="form-group">
+                                <label for="card-cvv">CVV</label>
+                                <input type="text" id="card-cvv" class="form-input" placeholder="123">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+        </main>
+
+        <footer class="payment-footer">
+            <button class="submit-btn" id="continueButton" onclick="continuePayment()">Continuar</button>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
