@@ -21,7 +21,6 @@ body {
     justify-content: center;
 }
 
-/* CORREÇÃO: Aplica o layout flex a TODOS os containers principais */
 body > div, .modal-overlay .page-container {
     width: 100%;
     max-width: 390px;
@@ -40,7 +39,6 @@ body > div, .modal-overlay .page-container {
 
 .home-wrapper {
     box-sizing: border-box; 
-    /* padding-bottom removido, o flex-grow do content-container cuida disso */
 }
 
 /* Header e Busca */
@@ -51,7 +49,7 @@ body > div, .modal-overlay .page-container {
     position: sticky;
     top: 0;
     z-index: 1000;
-    flex-shrink: 0; /* Impede o header de encolher */
+    flex-shrink: 0; 
 }
 header {
     display: flex;
@@ -93,12 +91,11 @@ header {
     position: relative; 
     flex-shrink: 0; 
 }
-/* CORREÇÃO: flex-grow faz o conteúdo esticar */
 .home-wrapper .content-container { 
     padding: 0 20px; 
-    flex-grow: 1; /* Faz o conteúdo ocupar o espaço */
-    overflow-y: auto; /* Adiciona scroll apenas ao conteúdo */
-    padding-bottom: 80px; /* Espaço para o botão flutuante */
+    flex-grow: 1; 
+    overflow-y: auto; 
+    padding-bottom: 80px; 
 }
 
 /* Carrossel */
@@ -238,7 +235,7 @@ header {
 }
 
 /* =================================================== */
-/* == CORREÇÃO DO BOTÃO FLUTUANTE (LEVANTADO) == */
+/* == BOTÃO FLUTUANTE (AJUSTADO) == */
 /* =================================================== */
 .next-button {
     position: fixed;
@@ -424,7 +421,6 @@ header {
 /* == ESTILOS DO MODAL 2: AGENDAR (Ref Agendar.png) == */
 /* =================================================== */
 
-/* CORREÇÃO: Header genérico do Modal */
 .popup-header {
     display: flex;
     align-items: center;
@@ -441,7 +437,6 @@ header {
     position: relative; 
 }
 
-/* CORREÇÃO: Botão de fechar/voltar genérico */
 .close-button {
     position: absolute;
     top: 50%;
@@ -461,19 +456,16 @@ header {
     align-items: center;
 }
 
-/* CORREÇÃO: Título do Header genérico (centralizado) */
 .header-title {
     font-size: 18px;
     font-weight: 600;
     color: var(--branco);
     margin: 0;
     text-align: center;
-    /* Padds para compensar o botão absoluto */
     padding-left: 40px; 
     padding-right: 40px;
 }
 
-/* Específico para Modal Agendar (com logo) */
 #agendarModal .popup-header {
     justify-content: center; 
     gap: 12px;
@@ -483,7 +475,7 @@ header {
     padding-right: 0;
 }
 #agendarModal .close-button {
-    z-index: 5; /* Fica sobre o banner */
+    z-index: 5; 
 }
 
 
@@ -523,7 +515,6 @@ header {
     z-index: 2;
 }
 
-/* Título (Detalhes do agendamento) */
 #agendarModal .section-title {
     text-align: center;
     font-size: 22px;
@@ -533,7 +524,6 @@ header {
     z-index: 3;
 }
 
-/* CORREÇÃO: Conteúdo principal com Flexbox e Scroll */
 .main-content {
     flex-grow: 1; 
     overflow-y: auto; 
@@ -612,7 +602,6 @@ header {
 .item-name { font-size: 16px; font-weight: 600; color: var(--branco); }
 .item-time-prof { font-size: 13px; color: #aaa; margin-top: 5px; line-height: 1.5; }
 
-/* ATUALIZADO: Container de Preço e Lixeira */
 .item-price-container {
     display: flex;
     align-items: flex-start; 
@@ -636,7 +625,6 @@ header {
     color: #ff6b6b; 
 }
 
-/* ATUALIZADO: Link "Adicionar mais itens" */
 .add-more-items {
     color: var(--dourado);
     text-decoration: none;
@@ -647,9 +635,11 @@ header {
 }
 
 
-/* CORREÇÃO: Rodapé do Modal Agendar (Sticky) */
+/* =================================================== */
+/* == CORREÇÃO DO RODAPÉ (Pagar agora) == */
+/* =================================================== */
 .payment-footer {
-    padding: 15px 20px;
+    padding: 15px 20px; /* Reduzido padding superior */
     background-color: var(--fundo-preto);
     border-top: 1px solid var(--cinza-borda);
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
@@ -660,29 +650,28 @@ header {
     width: 100%;
     max-width: 390px; 
     box-sizing: border-box; 
-    padding-bottom: 30px; /* Espaço para a barra do celular */
+    /* Aumenta o padding inferior para subir o conteúdo */
+    padding-bottom: 35px; 
 }
 .payment-details {
     display: flex;
     justify-content: space-between;
     font-size: 18px;
     font-weight: 700;
-    margin-bottom: 15px; /* Aumentado espaço */
+    margin-bottom: 12px; /* Reduzido margin */
 }
 .total-label { color: var(--branco); }
 .total-amount { color: var(--dourado); }
 
-/* REMOVIDO: .payment-note */
-
-/* NOVO: Botão "Pagar agora" */
+/* Botão "Pagar agora" (Menor) */
 .submit-btn-pay {
     width: 100%;
-    padding: 16px;
+    padding: 14px; /* Reduzido de 16px */
     background-color: var(--dourado);
     color: var(--fundo-preto);
     border: none;
     border-radius: 12px;
-    font-size: 18px;
+    font-size: 16px; /* Reduzido de 18px */
     font-weight: 700;
     font-family: 'Poppins', sans-serif;
     cursor: pointer;
