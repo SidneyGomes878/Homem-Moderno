@@ -654,8 +654,8 @@ header {
     width: 100%;
     max-width: 390px; 
     box-sizing: border-box; 
-    /* CORREÇÃO: Aumentado o padding para 40px */
-    padding-bottom: 40px; 
+    /* CORREÇÃO: Aumentado o padding para 60px para maior compatibilidade */
+    padding-bottom: 60px; 
 }
 .payment-details {
     display: flex;
