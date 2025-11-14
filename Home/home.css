@@ -187,9 +187,17 @@ header {
     flex-direction: column;
     align-items: center;
     font-size: 14px;
+    color: var(--dourado); /* Cor Dourada */
+    text-decoration: none; /* Remove o sublinhado do link */
+    cursor: pointer;
+}
+
+/* Garante que o link não fique roxo/azul depois de clicado */
+.link-item:visited, .link-item:hover, .link-item:active {
     color: var(--dourado);
     text-decoration: none;
 }
+
 .link-item i {
     font-size: 24px;
     background-color: var(--cinza-claro);
@@ -202,6 +210,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    color: var(--dourado); 
 }
 
 /* Lista de Serviços (E PRODUTOS) */

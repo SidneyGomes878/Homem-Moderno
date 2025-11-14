@@ -119,6 +119,36 @@ function handleNextStep() {
 }
 
 // ===================================================
+// == LÓGICA DA BARRA DE PESQUISA (ADICIONADO)
+// ===================================================
+function initSearch() {
+    const searchInput = document.querySelector('.search-input');
+    if (!searchInput) return;
+
+    // Seleciona todos os itens que podem ser filtrados
+    const serviceItems = document.querySelectorAll('.service-item');
+
+    searchInput.addEventListener('input', (e) => {
+        const filterText = e.target.value.toLowerCase().trim();
+
+        serviceItems.forEach(item => {
+            // Busca o nome do serviço/produto dentro do item
+            const nameElement = item.querySelector('.service-name');
+            if (nameElement) {
+                const name = nameElement.textContent.toLowerCase();
+                
+                // Se o nome contém o texto digitado, mostra; senão, esconde
+                if (name.includes(filterText)) {
+                    item.style.display = ''; // Remove o 'none' (volta ao padrão flex do CSS)
+                } else {
+                    item.style.display = 'none';
+                }
+            }
+        });
+    });
+}
+
+// ===================================================
 // == LÓGICA DO MODAL "PRÓXIMO" (ETAPA 2)
 // ===================================================
 function openProximoModal() { proximoModal.classList.remove('hidden'); homeWrapper.classList.add('hidden'); resetProximoSelections(); }
@@ -256,4 +286,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateHomeNextButton();
     initCarousel(); 
     showTab('servicos', document.getElementById('tab-serviços'));
+    
+    // INICIA A BARRA DE PESQUISA
+    initSearch();
 });
