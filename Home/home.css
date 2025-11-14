@@ -341,7 +341,12 @@ header {
 /* == ESTILOS DO MODAL 1: PRÓXIMO == */
 /* =================================================== */
 
-/* CORREÇÃO APLICADA AQUI: Título centralizado */
+#proximoModal .main-content {
+    flex-grow: 1; 
+    overflow-y: auto; 
+    padding: 20px;
+    padding-top: 30px; 
+}
 #proximoModal .section-title {
     text-align: center;
     font-size: 22px;
@@ -349,23 +354,15 @@ header {
     color: var(--dourado);
     margin: 0;
     z-index: 3;
-    padding-bottom: 20px; /* Espaçamento que faltava */
-}
-/* CORREÇÃO APLICADA AQUI: Conteúdo cresce e tem scroll */
-#proximoModal .main-content {
-    flex-grow: 1; 
-    overflow-y: auto; 
-    padding: 20px;
-    padding-top: 30px; /* Espaço do título */
+    padding-bottom: 20px; 
 }
 
-/* CORREÇÃO APLICADA AQUI: Centraliza a lista */
 .selection-list {
     display: flex;
     gap: 15px;
     margin-bottom: 30px;
     padding: 0 20px;
-    justify-content: center; /* Centraliza os profissionais */
+    justify-content: center; 
 }
 .selection-item {
     display: flex;
@@ -396,13 +393,12 @@ header {
     font-weight: 600;
 }
 
-/* CORREÇÃO APLICADA AQUI: Centraliza os horários */
 .time-slot-list {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     padding: 0 20px;
-    justify-content: center; /* Centraliza os horários */
+    justify-content: center; 
 }
 .time-slot {
     padding: 10px 15px;
@@ -418,38 +414,93 @@ header {
     font-weight: 600;
 }
 
-/* Botão do Modal Próximo (usa .next-button, 'position: fixed') */
 #nextButtonProximo {
     z-index: 2002; 
+    position: sticky; 
+    bottom: 20px;
+    margin: 20px 5%; 
+    width: 90%;
+    transform: none; 
+    left: auto;
 }
 
 /* =================================================== */
 /* == ESTILOS DO MODAL 2: AGENDAR (Ref Agendar.png) == */
 /* =================================================== */
+
+/* CORREÇÃO APLICADA AQUI: Regra genérica para o header do modal */
 .popup-header {
     display: flex;
     align-items: center;
+    justify-content: center; /* Centraliza por padrão */
     padding: 10px 20px;
     background-color: var(--fundo-preto);
     border-bottom: 1px solid var(--cinza-borda);
-    gap: 12px;
     position: sticky;
     top: 0;
     z-index: 10;
     flex-shrink: 0; 
+    height: 60px;
+    box-sizing: border-box;
+    position: relative; /* Contexto para o botão absoluto */
 }
+
+/* CORREÇÃO APLICADA AQUI: Regra genérica para o botão de fechar/voltar */
+.close-button {
+    position: absolute;
+    top: 50%;
+    left: 15px; /* Fica na esquerda */
+    transform: translateY(-50%);
+
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid var(--cinza-borda);
+    color: var(--branco);
+    font-size: 18px;
+    cursor: pointer;
+    border-radius: 50%;
+    width: 35px;
+    height: 35px;
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* CORREÇÃO APLICADA AQUI: Regra genérica para o título do header */
+.header-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--branco);
+    margin: 0;
+    text-align: center;
+    /* Adiciona padding para não sobrepor o botão */
+    padding-left: 40px; 
+    padding-right: 40px;
+}
+
+/* Regra específica para o Modal Agendar (com logo) */
+#agendarModal .popup-header {
+    justify-content: center; /* Centraliza o logo e o título */
+    gap: 12px;
+}
+#agendarModal .header-title {
+    /* Remove os paddings extras pois o logo já dá espaço */
+    padding-left: 0;
+    padding-right: 0;
+}
+/* O botão 'X' do Agendar fica por cima do banner */
+#agendarModal .close-button {
+    z-index: 5; 
+}
+
+
 .header-logo {
     width: 40px;
     height: 40px;
     border-radius: 50%;
     border: 1px solid var(--dourado);
 }
-.header-title {
-    font-size: 18px;
-    font-weight: 600;
-    color: var(--branco);
-    margin: 0;
-}
+
 .title-banner {
     position: relative;
     height: 120px;
@@ -478,24 +529,8 @@ header {
     background: linear-gradient(180deg, rgba(15, 15, 15, 0.5) 0%, rgba(15, 15, 15, 1) 100%);
     z-index: 2;
 }
-.close-button {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background: rgba(0, 0, 0, 0.5);
-    border: 1px solid var(--cinza-borda);
-    color: var(--branco);
-    font-size: 18px;
-    cursor: pointer;
-    border-radius: 50%;
-    width: 35px;
-    height: 35px;
-    z-index: 3;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-/* Título centralizado para o Modal Agendar */
+
+/* Título centralizado (Detalhes do agendamento) */
 #agendarModal .section-title {
     text-align: center;
     font-size: 22px;
