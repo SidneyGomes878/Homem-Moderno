@@ -5,7 +5,7 @@
 let allSelections = [];
 let selectedProfessional = null;
 let selectedTime = null;
-let userAppointments = []; 
+let userAppointments = []; // (Usado apenas pela aba 'Agendamentos')
 let currentModalData = {}; 
 
 // ===================================================
@@ -33,7 +33,6 @@ const agendarModal = document.getElementById('agendarModal');
 const modalItemsList = document.getElementById('modalItemsList');
 const modalTotalAmountSpan = document.getElementById('modalTotalAmount');
 
-// Cache dos novos elementos do Modal Agendar
 const successMessage = document.getElementById('successMessage');
 const payButton = document.getElementById('payButton');
 
@@ -56,22 +55,22 @@ function initCarousel() { if (slides.length > 0) { createDots(); goToSlide(0); s
 function showTab(tabName, element) {
     if (tabName === 'agendamentos') {
         if (userAppointments.length > 0) {
-            openAgendarModal(true); 
-            return; 
+            // (Lógica futura para mostrar agendamentos reais)
+            // Por enquanto, apenas mostra o estado vazio
+            contentServicos.classList.add('hidden');
+            contentAgendamentos.classList.remove('hidden');
+        } else {
+             contentServicos.classList.add('hidden');
+             contentAgendamentos.classList.remove('hidden');
         }
+    } else {
+        contentServicos.classList.remove('hidden');
+        contentAgendamentos.classList.add('hidden');
     }
-    contentServicos.classList.add('hidden');
-    contentAgendamentos.classList.add('hidden');
     
-    // Garante que tabServicos e tabAgendamentos existam antes de usar
-    if(tabServicos) tabServicos.classList.remove('active');
-    if(tabAgendamentos) tabAgendamentos.classList.remove('active');
-
-    if (tabName === 'servicos') {
-        if(contentServicos) contentServicos.classList.remove('hidden');
-    } else if (tabName === 'agendamentos') {
-        if(contentAgendamentos) contentAgendamentos.classList.remove('hidden');
-    }
+    tabServicos.classList.remove('active');
+    tabAgendamentos.classList.remove('active');
+    
     if (element) {
         element.classList.add('active');
     }
@@ -125,7 +124,7 @@ function checkLoginAndProceed() {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
 
     if (isLoggedIn === 'true') {
-        openAgendarModal(false);
+        openAgendarModal(); // (isViewing foi removido, é sempre um novo agendamento)
     } else {
         alert("Você precisa fazer login para continuar o agendamento.");
         window.location.href = "../Login/index.html";
@@ -172,26 +171,21 @@ function updateProximoNextButton() { if (selectedProfessional && selectedTime) {
 // == LÓGICA DO MODAL "AGENDAR" (ETAPA 3)
 // ===================================================
 
-// NOVO: Função de pagamento
-function processPayment() {
-    // 1. Mostra a mensagem de sucesso
-    if(successMessage) {
-        successMessage.classList.remove('hidden');
-    }
-
-    // 2. Esconde o botão de pagar
-    if(payButton) {
-        payButton.classList.add('hidden');
-    }
+// NOVO: Redireciona para a página de Pagamento
+function processPayment() { // (Nome antigo 'goToPayment' alterado)
+    // Salva os dados atuais no sessionStorage para a página de pagamento ler
+    currentModalData = {
+        selections: [...allSelections],
+        professional: selectedProfessional,
+        time: selectedTime
+    };
+    sessionStorage.setItem('currentAppointment', JSON.stringify(currentModalData));
     
-    // 3. (Simulação) Fecha o modal e reseta tudo após 3 segundos
-    setTimeout(() => {
-        closeAgendarModal();
-    }, 3000); // Espera 3 segundos
+    // Redireciona
+    window.location.href = "../Pagamento/index.html";
 }
 
-
-function openAgendarModal(isViewing = false) { 
+function openAgendarModal() { 
     
     // Garante que a UI esteja no estado inicial
     if(successMessage) {
@@ -201,20 +195,12 @@ function openAgendarModal(isViewing = false) {
         payButton.classList.remove('hidden');
     }
 
-    if (isViewing) {
-        currentModalData = userAppointments[0];
-    } else {
-        const newAppointment = {
-            selections: [...allSelections], 
-            professional: selectedProfessional,
-            time: selectedTime
-        };
-        // Salva no "BD" (se for um novo agendamento, não só visualização)
-        if (!isViewing) {
-            userAppointments = [newAppointment]; 
-        }
-        currentModalData = newAppointment;
-    }
+    // Define os dados para o modal ATUAL
+    currentModalData = {
+        selections: [...allSelections], 
+        professional: selectedProfessional,
+        time: selectedTime
+    };
     
     loadAgendarSummary();
     
@@ -235,13 +221,11 @@ function closeAgendarModal() {
 
     document.querySelectorAll('.service-item.selected').forEach(item => item.classList.remove('selected'));
     
-    // Se o usuário não tiver agendamentos, volta para "Serviços"
-    // Se tiver, deixa na aba "Agendamentos" (para ele ver o que acabou de agendar)
-    if(userAppointments.length === 0) {
-        goToServicosTab();
-    } else {
-        showTab('agendamentos', tabAgendamentos);
-    }
+    goToServicosTab();
+    
+    // Limpa o sessionStorage e o parâmetro da URL (para evitar reabrir)
+    sessionStorage.removeItem('currentAppointment');
+    window.history.replaceState({}, document.title, window.location.pathname);
 }
 
 function removeItem(index) {
@@ -253,34 +237,37 @@ function removeItem(index) {
         // Remove do array de seleção global (carrinho)
         allSelections = allSelections.filter(item => item.name !== itemToRemove.name);
         
-        if (userAppointments.includes(currentModalData)) {
-             userAppointments[0] = currentModalData;
-        }
-
         loadAgendarSummary();
         updateHomeNextButton(); // Atualiza o contador do botão flutuante da Home
 
         if (currentModalData.selections.length === 0) {
-            userAppointments = []; 
             closeAgendarModal();
         }
     }
 }
+
 
 function loadAgendarSummary() {
     let totalValue = 0;
     modalItemsList.innerHTML = '<h3>ITENS</h3>'; 
     let itemHtml = '';
 
+    // Verifica se os dados vieram do sessionStorage (se o usuário voltou da pág. de pagamento)
+    const storedSelections = sessionStorage.getItem('currentAppointment');
+    if (storedSelections && (!currentModalData || !currentModalData.selections || currentModalData.selections.length === 0)) {
+        currentModalData = JSON.parse(storedSelections);
+        allSelections = currentModalData.selections;
+        selectedProfessional = currentModalData.professional;
+        selectedTime = currentModalData.time;
+    }
+
     if (!currentModalData || !currentModalData.selections || currentModalData.selections.length === 0) {
         modalItemsList.insertAdjacentHTML('beforeend', '<p style="color:#888; text-align: center;">Nenhum item selecionado.</p>');
         modalTotalAmountSpan.textContent = `R$0,00`;
-        // Esconde o botão de pagar se não houver itens
         if(payButton) payButton.classList.add('hidden');
         return;
     }
 
-    // Garante que o botão de pagar está visível se houver itens
     if(payButton) payButton.classList.remove('hidden');
 
     currentModalData.selections.forEach((item, index) => {
@@ -319,6 +306,17 @@ function loadAgendarSummary() {
 document.addEventListener('DOMContentLoaded', () => {
     updateHomeNextButton();
     initCarousel(); 
-    showTab('serviços', document.getElementById('tab-serviços'));
+    
+    // Verifica se o usuário está voltando da página de pagamento
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+
+    if (action === 'openAgendarModal') {
+        openAgendarModal();
+    } else {
+        // Carregamento normal
+        showTab('servicos', document.getElementById('tab-serviços'));
+    }
+    
     initSearch();
 });
