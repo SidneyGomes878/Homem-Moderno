@@ -58,8 +58,13 @@ header {
     margin-bottom: 15px;
 }
 .barber-name { font-size: 24px; font-weight: 700; color: var(--dourado); }
-.user-icon-link { text-decoration: none; color: var(--branco); }
+
+.user-icon-link {
+    text-decoration: none; 
+    color: var(--branco); 
+}
 .user-icon { font-size: 28px; }
+
 .search-container { position: relative; }
 .search-input {
     width: 100%;
@@ -638,7 +643,7 @@ header {
 /* == CORREÇÃO DO RODAPÉ (Pagar agora) == */
 /* =================================================== */
 .payment-footer {
-    padding: 15px 20px; /* Reduzido padding superior */
+    padding: 15px 20px;
     background-color: var(--fundo-preto);
     border-top: 1px solid var(--cinza-borda);
     box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
@@ -649,15 +654,15 @@ header {
     width: 100%;
     max-width: 390px; 
     box-sizing: border-box; 
-    /* Aumenta o padding inferior para subir o conteúdo */
-    padding-bottom: 30px; 
+    /* CORREÇÃO: Aumentado o padding para 40px */
+    padding-bottom: 40px; 
 }
 .payment-details {
     display: flex;
     justify-content: space-between;
     font-size: 18px;
     font-weight: 700;
-    margin-bottom: 15px; /* Aumentado espaço */
+    margin-bottom: 15px; 
 }
 .total-label { color: var(--branco); }
 .total-amount { color: var(--dourado); }
@@ -665,12 +670,12 @@ header {
 /* Botão "Pagar agora" (Menor) */
 .submit-btn-pay {
     width: 100%;
-    padding: 14px; /* Reduzido de 16px */
+    padding: 14px; 
     background-color: var(--dourado);
     color: var(--fundo-preto);
     border: none;
     border-radius: 12px;
-    font-size: 16px; /* Reduzido de 18px */
+    font-size: 16px; 
     font-weight: 700;
     font-family: 'Poppins', sans-serif;
     cursor: pointer;
