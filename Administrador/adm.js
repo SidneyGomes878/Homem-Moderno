@@ -25,3 +25,5 @@ function cancelAppointment(buttonElement) {
     const actions = card.querySelector('.card-actions');
     actions.innerHTML = '<p style="color: #ff6b6b; font-weight: 600; margin: 0;">Cancelado</p>';
 }
+
+
