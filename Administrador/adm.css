@@ -1,0 +1,260 @@
+/* =================================================== */
+/* == GERAL E VARIÁVEIS (TEMA) == */
+/* =================================================== */
+:root {
+    --fundo-preto: #0F0F0F;
+    --dourado: #C6A55C;
+    --branco: #FFFFFF;
+    --cinza-texto: #AAAAAA;
+    --cinza-card: #1C1C1E;
+    --cinza-borda: #333333;
+    --cinza-claro: #333; 
+}
+
+body {
+    background-color: var(--fundo-preto);
+    color: var(--branco);
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* Container principal (Mobile-first 390px) */
+.admin-container {
+    width: 100%;
+    max-width: 390px;
+    min-height: 100vh;
+    margin: 0 auto;
+    background-color: var(--fundo-preto);
+    position: relative;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    /* Espaço para o menu inferior fixo */
+    padding-bottom: 70px;
+}
+
+/* =================================================== */
+/* == CABEÇALHO ADMIN == */
+/* =================================================== */
+.admin-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: var(--cinza-card); /* Fundo diferente da Home */
+    flex-shrink: 0;
+}
+
+.header-welcome {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.header-logo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1px solid var(--dourado);
+}
+
+.welcome-text {
+    display: flex;
+    flex-direction: column;
+}
+.welcome-text span {
+    font-size: 14px;
+    color: var(--cinza-texto);
+}
+.welcome-text strong {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--branco);
+}
+
+.notification-bell {
+    font-size: 20px;
+    color: var(--dourado);
+    text-decoration: none;
+    position: relative;
+}
+/* (Opcional) Bolinha de notificação */
+.notification-bell::after {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: red;
+    position: absolute;
+    top: 0;
+    right: 0;
+    border: 1px solid var(--fundo-preto);
+}
+
+/* =================================================== */
+/* == CONTEÚDO PRINCIPAL == */
+/* =================================================== */
+.admin-main {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 25px 0; /* Padding vertical, sem horizontal */
+}
+
+.section-title {
+    color: var(--dourado);
+    border-left: 4px solid var(--dourado);
+    padding-left: 16px; /* Ajustado para 16px para bater com o padding do container */
+    margin: 0 20px 20px 20px; /* Adiciona margin horizontal */
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* Seção 1: Agendamentos de Hoje */
+.horizontal-scroll {
+    display: flex;
+    overflow-x: auto;
+    gap: 15px;
+    /* Padding para os cards não colarem nas bordas */
+    padding: 0 20px 10px 20px; 
+    /* Esconde a barra de rolagem (padrão mobile) */
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+.horizontal-scroll::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+}
+
+.appointment-card {
+    flex: 0 0 220px; /* Não encolhe, não cresce, base de 220px */
+    background-color: var(--cinza-card);
+    border-radius: 12px;
+    padding: 15px;
+    border-top: 3px solid var(--dourado);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.time {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--dourado);
+    margin-bottom: 10px;
+    display: block;
+}
+.client-name, .service-name {
+    font-size: 14px;
+    color: var(--branco);
+    margin: 4px 0;
+}
+.client-name strong {
+    font-weight: 600;
+}
+.service-name {
+    color: var(--cinza-texto);
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+.btn {
+    flex-grow: 1;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+.btn-primary {
+    background-color: var(--dourado);
+    color: var(--fundo-preto);
+}
+.btn-secondary {
+    background-color: var(--cinza-borda);
+    color: var(--cinza-texto);
+}
+
+/* Seção 2: Serviços Finalizados */
+.finished-section {
+    margin-top: 30px;
+}
+
+.finished-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 0 20px; /* Padding horizontal */
+}
+
+.finished-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--cinza-card);
+    padding: 15px;
+    border-radius: 10px;
+}
+.item-details {
+    display: flex;
+    flex-direction: column;
+}
+.item-details .name {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--branco);
+}
+.item-details .time-range {
+    font-size: 14px;
+    color: var(--cinza-texto);
+}
+.item-price {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--branco); /* Preço em branco, conforme imagem */
+}
+
+/* =================================================== */
+/* == MENU DE NAVEGAÇÃO INFERIOR == */
+/* =================================================== */
+.bottom-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background-color: var(--cinza-card);
+    border-top: 1px solid var(--cinza-borda);
+    
+    /* Fixo na parte de baixo */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    
+    /* Garante que fique centralizado com o container */
+    margin: 0 auto;
+    max-width: 390px; 
+    
+    height: 65px; /* Altura do menu */
+    z-index: 1000;
+}
+
+.nav-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    text-decoration: none;
+    color: var(--cinza-texto);
+    font-size: 12px;
+    font-weight: 500;
+}
+.nav-item i {
+    font-size: 20px;
+}
+.nav-item.active {
+    color: var(--dourado);
+}
