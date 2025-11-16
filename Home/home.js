@@ -1,11 +1,15 @@
 // ===================================================
+// == IMPORTS DA API (NOVO)
+// ===================================================
+import { BASE_URL, obterToken, estaLogado } from '../serves/api.js';
+
+// ===================================================
 // == ESTADO GLOBAL DO APLICATIVO
 // ===================================================
-
 let allSelections = [];
 let selectedProfessional = null;
 let selectedTime = null;
-let userAppointments = []; // (Usado apenas pela aba 'Agendamentos')
+let userAppointments = []; 
 let currentModalData = {}; 
 
 // ===================================================
@@ -32,9 +36,9 @@ const nextCountProximo = document.getElementById('nextCountProximo');
 const agendarModal = document.getElementById('agendarModal');
 const modalItemsList = document.getElementById('modalItemsList');
 const modalTotalAmountSpan = document.getElementById('modalTotalAmount');
-
 const successMessage = document.getElementById('successMessage');
 const payButton = document.getElementById('payButton');
+
 
 // ===================================================
 // == LÓGICA DO CARROSSEL (BANNER)
@@ -55,22 +59,22 @@ function initCarousel() { if (slides.length > 0) { createDots(); goToSlide(0); s
 function showTab(tabName, element) {
     if (tabName === 'agendamentos') {
         if (userAppointments.length > 0) {
-            // (Lógica futura para mostrar agendamentos reais)
-            // Por enquanto, apenas mostra o estado vazio
-            contentServicos.classList.add('hidden');
-            contentAgendamentos.classList.remove('hidden');
-        } else {
-             contentServicos.classList.add('hidden');
-             contentAgendamentos.classList.remove('hidden');
+            openAgendarModal(true); 
+            return; 
         }
-    } else {
-        contentServicos.classList.remove('hidden');
-        contentAgendamentos.classList.add('hidden');
     }
+    contentServicos.classList.add('hidden');
+    contentAgendamentos.classList.add('hidden');
     
-    tabServicos.classList.remove('active');
-    tabAgendamentos.classList.remove('active');
-    
+    // Garante que tabServicos e tabAgendamentos existam antes de usar
+    if(tabServicos) tabServicos.classList.remove('active');
+    if(tabAgendamentos) tabAgendamentos.classList.remove('active');
+
+    if (tabName === 'servicos') {
+        if(contentServicos) contentServicos.classList.remove('hidden');
+    } else if (tabName === 'agendamentos') {
+        if(contentAgendamentos) contentAgendamentos.classList.remove('hidden');
+    }
     if (element) {
         element.classList.add('active');
     }
@@ -118,15 +122,16 @@ function handleNextStep() {
 }
 
 // ===================================================
-// == LÓGICA DE VERIFICAÇÃO DE LOGIN
+// == LÓGICA DE VERIFICAÇÃO DE LOGIN (ATUALIZADO)
 // ===================================================
 function checkLoginAndProceed() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
-
-    if (isLoggedIn === 'true') {
-        openAgendarModal(); // (isViewing foi removido, é sempre um novo agendamento)
+    // Agora usa a função do api.js
+    if (estaLogado()) {
+        openAgendarModal(false);
     } else {
         alert("Você precisa fazer login para continuar o agendamento.");
+        // Salva o carrinho atual para recarregar após o login
+        sessionStorage.setItem('pendingSelections', JSON.stringify(allSelections));
         window.location.href = "../Login/index.html";
     }
 }
@@ -137,12 +142,9 @@ function checkLoginAndProceed() {
 function initSearch() {
     const searchInput = document.querySelector('.search-input');
     if (!searchInput) return;
-
     const serviceItems = document.querySelectorAll('.service-item');
-
     searchInput.addEventListener('input', (e) => {
         const filterText = e.target.value.toLowerCase().trim();
-
         serviceItems.forEach(item => {
             const nameElement = item.querySelector('.service-name');
             if (nameElement) {
@@ -167,40 +169,106 @@ function selectProfessional(element, name) { professionalList.querySelectorAll('
 function selectTime(element, time) { timeList.querySelectorAll('.time-slot').forEach(item => item.classList.remove('selected')); element.classList.add('selected'); selectedTime = time; updateProximoNextButton(); }
 function updateProximoNextButton() { if (selectedProfessional && selectedTime) { nextButtonProximo.classList.remove('hidden'); nextCountProximo.textContent = `${selectedProfessional} @ ${selectedTime}`; } else { nextButtonProximo.classList.add('hidden'); nextCountProximo.textContent = 'Selecione'; } }
 
+
 // ===================================================
-// == LÓGICA DO MODAL "AGENDAR" (ETAPA 3)
+// == LÓGICA DO MODAL "AGENDAR" (ETAPA 3 - API)
 // ===================================================
 
-// NOVO: Redireciona para a página de Pagamento
-function processPayment() { // (Nome antigo 'goToPayment' alterado)
-    // Salva os dados atuais no sessionStorage para a página de pagamento ler
-    currentModalData = {
-        selections: [...allSelections],
-        professional: selectedProfessional,
-        time: selectedTime
+/**
+ * ATUALIZADO: "Pagar agora" agora chama a API
+ */
+async function processPayment() {
+    const token = obterToken();
+    if (!token) {
+        checkLoginAndProceed(); // Re-autentica se o token sumiu
+        return;
+    }
+
+    // --- ALERTA DE GAMBIARRA (Devido à API) ---
+    // A API só aceita UM item, então vamos pegar o primeiro
+    const primeiroItem = allSelections[0];
+    if (!primeiroItem) {
+        alert("Carrinho vazio!");
+        return;
+    }
+
+    // A API espera um formato de Data/Hora (DateTime)
+    // Vamos usar a hora selecionada (se houver) ou a hora atual
+    let dataHoraAgendamento;
+    if (selectedTime) {
+        // Pega a data de hoje e combina com a hora selecionada
+        const [hora, minuto] = selectedTime.split(':');
+        const hoje = new Date();
+        hoje.setHours(hora);
+        hoje.setMinutes(minuto);
+        hoje.setSeconds(0);
+        dataHoraAgendamento = hoje.toISOString();
+    } else {
+        // Se for só produto, usa a data atual
+        dataHoraAgendamento = new Date().toISOString(); 
+    }
+
+    const agendamentoDto = {
+        tipoCorte: primeiroItem.name, // Ex: "Corte Social" ou "Pomada"
+        dataHora: dataHoraAgendamento, 
+        preco: primeiroItem.price
     };
-    sessionStorage.setItem('currentAppointment', JSON.stringify(currentModalData));
-    
-    // Redireciona
-    window.location.href = "../Pagamento/index.html";
+    // --- FIM DA GAMBIARRA ---
+
+    try {
+        const response = await fetch(`${BASE_URL}/Agendamentos/agendar`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}` // Envia o Token!
+            },
+            body: JSON.stringify(agendamentoDto)
+        });
+
+        // 200 (OK) ou 201 (Created) são sucesso
+        if (response.status === 200 || response.status === 201) {
+            if(successMessage) successMessage.classList.remove('hidden');
+            if(payButton) payButton.classList.add('hidden');
+            
+            // Salva o agendamento localmente (para a aba "Agendamentos")
+            userAppointments = [currentModalData]; 
+
+            setTimeout(() => {
+                closeAgendarModal();
+            }, 3000); // Espera 3 seg
+
+        } else if (response.status === 401) {
+            // 401 = Token expirado ou inválido
+            alert("Sua sessão expirou. Faça login novamente.");
+            window.location.href = "../Login/index.html";
+        } else {
+            // Outros erros (ex: 400 Bad Request)
+            const errorData = await response.json();
+            alert(`Erro ao agendar: ${errorData.message || response.status}`);
+        }
+
+    } catch(error) {
+        console.error('Falha na rede ou API .NET offline:', error);
+        alert('Não foi possível conectar ao servidor. Verifique se sua API .NET está rodando.');
+    }
 }
 
-function openAgendarModal() { 
-    
-    // Garante que a UI esteja no estado inicial
-    if(successMessage) {
-        successMessage.classList.add('hidden');
-    }
-    if(payButton) {
-        payButton.classList.remove('hidden');
-    }
 
-    // Define os dados para o modal ATUAL
-    currentModalData = {
-        selections: [...allSelections], 
-        professional: selectedProfessional,
-        time: selectedTime
-    };
+function openAgendarModal(isViewing = false) { 
+    
+    if(successMessage) successMessage.classList.add('hidden');
+    if(payButton) payButton.classList.remove('hidden');
+
+    if (isViewing) {
+        currentModalData = userAppointments[0];
+    } else {
+        currentModalData = {
+            selections: [...allSelections], 
+            professional: selectedProfessional,
+            time: selectedTime
+        };
+        // (Não salva no userAppointments ainda, só depois da API)
+    }
     
     loadAgendarSummary();
     
@@ -221,24 +289,21 @@ function closeAgendarModal() {
 
     document.querySelectorAll('.service-item.selected').forEach(item => item.classList.remove('selected'));
     
-    goToServicosTab();
-    
-    // Limpa o sessionStorage e o parâmetro da URL (para evitar reabrir)
-    sessionStorage.removeItem('currentAppointment');
-    window.history.replaceState({}, document.title, window.location.pathname);
+    if(userAppointments.length > 0) {
+        showTab('agendamentos', tabAgendamentos);
+    } else {
+        goToServicosTab();
+    }
 }
 
 function removeItem(index) {
     if (currentModalData && currentModalData.selections) {
         const itemToRemove = currentModalData.selections[index];
-        // Remove do array de dados do modal atual
         currentModalData.selections.splice(index, 1);
-        
-        // Remove do array de seleção global (carrinho)
         allSelections = allSelections.filter(item => item.name !== itemToRemove.name);
         
         loadAgendarSummary();
-        updateHomeNextButton(); // Atualiza o contador do botão flutuante da Home
+        updateHomeNextButton(); 
 
         if (currentModalData.selections.length === 0) {
             closeAgendarModal();
@@ -246,20 +311,10 @@ function removeItem(index) {
     }
 }
 
-
 function loadAgendarSummary() {
     let totalValue = 0;
     modalItemsList.innerHTML = '<h3>ITENS</h3>'; 
     let itemHtml = '';
-
-    // Verifica se os dados vieram do sessionStorage (se o usuário voltou da pág. de pagamento)
-    const storedSelections = sessionStorage.getItem('currentAppointment');
-    if (storedSelections && (!currentModalData || !currentModalData.selections || currentModalData.selections.length === 0)) {
-        currentModalData = JSON.parse(storedSelections);
-        allSelections = currentModalData.selections;
-        selectedProfessional = currentModalData.professional;
-        selectedTime = currentModalData.time;
-    }
 
     if (!currentModalData || !currentModalData.selections || currentModalData.selections.length === 0) {
         modalItemsList.insertAdjacentHTML('beforeend', '<p style="color:#888; text-align: center;">Nenhum item selecionado.</p>');
@@ -306,17 +361,6 @@ function loadAgendarSummary() {
 document.addEventListener('DOMContentLoaded', () => {
     updateHomeNextButton();
     initCarousel(); 
-    
-    // Verifica se o usuário está voltando da página de pagamento
-    const urlParams = new URLSearchParams(window.location.search);
-    const action = urlParams.get('action');
-
-    if (action === 'openAgendarModal') {
-        openAgendarModal();
-    } else {
-        // Carregamento normal
-        showTab('servicos', document.getElementById('tab-serviços'));
-    }
-    
+    showTab('servicos', document.getElementById('tab-serviços'));
     initSearch();
 });

@@ -1,3 +1,6 @@
+// Importa o BASE_URL e a função de salvar o token
+import { BASE_URL, salvarToken } from 'serves/api.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     
     const togglePassword = document.getElementById('togglePassword');
@@ -20,23 +23,54 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Lógica de submissão do formulário (Login Simulado)
+    // 2. Lógica de submissão do formulário (AGORA COM API)
     if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
+        // Adiciona 'async' para 'await'
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault(); 
             
-            const nome = document.getElementById('user-name').value;
+            // O ID 'user-name' está sendo usado para o Email, conforme seu HTML
+            const email = document.getElementById('user-name').value;
+            const password = passwordInput.value;
             
-            // === SALVA O LOGIN NO NAVEGADOR ===
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userName', nome);
+            // 3. Monta o DTO (igual ao da documentação)
+            const loginDto = {
+                email: email,
+                password: password
+            };
 
-            console.log("Login realizado para:", nome);
+            // 4. Envia para a API (fetch)
+            try {
+                const response = await fetch(`${BASE_URL}/Auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginDto)
+                });
 
-            alert('Login bem-sucedido! Redirecionando para a Home.');
-            
-            // Redireciona para a Home
-            window.location.href = "../Home/index.html";
+                // 5. Trata a resposta (Status 200 = OK)
+                if (response.status === 200) {
+                    const data = await response.json(); // Ex: { token: "...", user: {...} }
+                    
+                    // 6. SALVA O TOKEN no localStorage!
+                    salvarToken(data.token); 
+                    // (Opcional: salvar nome do usuário)
+                    // localStorage.setItem('userName', data.user.nome); 
+                    
+                    alert('Login bem-sucedido! Redirecionando para a Home.');
+                    window.location.href = "../Home/index.html";
+
+                } else if (response.status === 401 || response.status === 404) {
+                    // 401 (Unauthorized) ou 404 (Not Found) = Login inválido
+                    alert('Email ou senha incorretos.');
+                } else {
+                    alert('Erro desconhecido ao tentar logar.');
+                }
+            } catch (error) {
+                console.error('Falha na rede ou API .NET offline:', error);
+                alert('Não foi possível conectar ao servidor. Verifique se sua API .NET está rodando.');
+            }
         });
     }
 });
