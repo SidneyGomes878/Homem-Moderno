@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Homem Moderno</title>
+    <link rel="stylesheet" href="adm.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="admin-container">
+        <header class="admin-header">
+            <div class="header-welcome">
+                <img src="img/logo.png" alt="Logo" class="header-logo">
+                <div class="welcome-text">
+                    <span>Bem-vindo,</span>
+                    <strong>Pedro</strong>
+                </div>
+            </div>
+            <a href="#" class="notification-bell">
+                <i class="fas fa-bell"></i>
+            </a>
+        </header>
+
+        <main class="admin-main">
+            
+            <section class="appointment-section">
+                <h2 class="section-title">Agendamentos de hoje</h2>
+                
+                <div class="horizontal-scroll">
+                    <div class="appointment-card">
+                        <span class="time">16:00</span>
+                        <p class="client-name">Cliente: <strong>Sidnei</strong></p>
+                        <p class="service-name">Corte Social</p>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="confirmAppointment(this)">Confirmar</button>
+                            <button class="btn btn-secondary" onclick="cancelAppointment(this)">Cancelar</button>
+                        </div>
+                    </div>
+                    <div class="appointment-card">
+                        <span class="time">17:00</span>
+                        <p class="client-name">Cliente: <strong>Lucas</strong></p>
+                        <p class="service-name">Barba Completa</p>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="confirmAppointment(this)">Confirmar</button>
+                            <button class="btn btn-secondary" onclick="cancelAppointment(this)">Cancelar</button>
+                        </div>
+                    </div>
+                    <div class="appointment-card">
+                        <span class="time">18:00</span>
+                        <p class="client-name">Cliente: <strong>Marcos</strong></p>
+                        <p class="service-name">Corte Degradê</p>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="confirmAppointment(this)">Confirmar</button>
+                            <button class="btn btn-secondary" onclick="cancelAppointment(this)">Cancelar</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="finished-section">
+                <h2 class="section-title">Serviços finalizados</h2>
+                
+                <div class="finished-list">
+                    <div class="finished-item">
+                        <div class="item-details">
+                            <span class="name">Sidnei</span>
+                            <span class="time-range">16:00 - 16:30</span>
+                        </div>
+                        <span class="item-price">R$ 30,00</span>
+                    </div>
+                    <div class="finished-item">
+                        <div class="item-details">
+                            <span class="name">Lucas</span>
+                            <span class="time-range">17:00 - 17:30</span>
+                        </div>
+                        <span class="item-price">R$ 20,00</span>
+                    </div>
+                    <div class="finished-item">
+                        <div class="item-details">
+                            <span class="name">Marcos</span>
+                            <span class="time-range">18:00 - 18:45</span>
+                        </div>
+                        <span class="item-price">R$ 35,00</span>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+
+        <nav class="bottom-nav">
+            <a href="../Home/index.html" class="nav-item">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </a>
+            <a href="#" class="nav-item active"> <i class="fas fa-calendar-alt"></i>
+                <span>Agenda</span>
+            </a>
+            <a href="../Login/index.html" class="nav-item"> <i class="fas fa-user"></i>
+                <span>Perfil</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="adm.js"></script>
+</body>
+</html>
