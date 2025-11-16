@@ -35,8 +35,22 @@ document.addEventListener('DOMContentLoaded', () => {
             try {
                 const response = await window.API.loginUser({ email, password });
                 console.log("Login realizado para:", email);
-                alert('Login bem-sucedido! Redirecionando para a Home.');
-                window.location.href = "../Home/index.html";
+                console.log("Resposta do login:", response);
+                
+                // Verificar o role do usuário na resposta
+                const role = response.user ? response.user.papel : null;
+                console.log("Role do usuário:", role);
+                
+                if (role === 'Admin') {
+                    // Salvar o role para uso futuro
+                    localStorage.setItem('userRole', role);
+                    alert('Login bem-sucedido! Redirecionando para o painel do Administrador.');
+                    window.location.href = "../Administrador/adm.html";
+                } else {
+                    localStorage.setItem('userRole', role || 'Cliente');
+                    alert('Login bem-sucedido! Redirecionando para a Home.');
+                    window.location.href = "../Home/index.html";
+                }
             } catch (error) {
                 console.error("Erro no login:", error);
                 alert('Erro no login: ' + error.message);

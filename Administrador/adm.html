@@ -26,6 +26,26 @@
 
         <main class="admin-main">
             
+            <section class="revenue-section">
+                <h2 class="section-title">Receita de hoje</h2>
+                <div class="revenue-card">
+                    <div class="revenue-info">
+                        <span class="revenue-label">Estimativa</span>
+                        <strong id="todayRevenue">R$ 0,00</strong>
+                    </div>
+                    <div class="revenue-details">
+                        <div class="rev-block">
+                            <span id="confirmedCount">0</span>
+                            <small>Confirmados</small>
+                        </div>
+                        <div class="rev-block">
+                            <span id="canceledCount">0</span>
+                            <small>Cancelados</small>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <section class="appointment-section">
                 <h2 class="section-title">Agendamentos de hoje</h2>
                 
@@ -88,6 +108,24 @@
                 </div>
             </section>
 
+            <section class="confirmed-section">
+                <h2 class="section-title">Serviços confirmados</h2>
+                <div class="confirmed-list"></div>
+                <div class="confirmed-summary">
+                    <span>Total confirmado:</span>
+                    <strong id="confirmedRevenue">R$ 0,00</strong>
+                </div>
+            </section>
+
+            <section class="canceled-section">
+                <h2 class="section-title">Serviços cancelados</h2>
+                <div class="canceled-list"></div>
+                <div class="canceled-summary">
+                    <span>Total perdido:</span>
+                    <strong id="canceledRevenue">R$ 0,00</strong>
+                </div>
+            </section>
+
         </main>
 
         <nav class="bottom-nav">
@@ -104,6 +142,7 @@
         </nav>
     </div>
 
+    <script src="../server/api.js"></script>
     <script src="adm.js"></script>
 </body>
 </html>

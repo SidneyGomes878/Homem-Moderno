@@ -6,6 +6,24 @@ function getAuthToken() {
     return localStorage.getItem('authToken');
 }
 
+// Função para decodificar JWT e obter o payload
+function decodeJWT(token) {
+    try {
+        const payload = token.split('.')[1];
+        const decoded = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+        console.log("Payload decodificado:", decoded);
+        return decoded;
+    } catch (error) {
+        console.error('Erro ao decodificar token:', error);
+        return null;
+    }
+}
+
+// Função para obter o role do usuário (agora do localStorage, se salvo)
+function getUserRole() {
+    return localStorage.getItem('userRole');
+}
+
 // Função auxiliar para fazer requisições com autenticação
 async function apiRequest(endpoint, options = {}) {
     const url = `${API_BASE_URL}${endpoint}`;
@@ -150,7 +168,8 @@ window.API = {
     getAllAgendamentos,
     getMyNotificacoes,
     markNotificacaoAsViewed,
-    deleteNotificacao
+    deleteNotificacao,
+    getUserRole
 };
 
 console.log('API loaded successfully:', window.API);
