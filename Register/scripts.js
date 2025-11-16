@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // Lógica para alternar visualização de senha
-    // Agora suporta múltiplos campos se necessário, usando data-target
+
     const togglePasswordIcons = document.querySelectorAll('.toggle-password');
 
     togglePasswordIcons.forEach(icon => {
@@ -19,28 +17,31 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Lógica de submissão do formulário de registro (simulação)
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
-        registerForm.addEventListener('submit', (e) => {
+        registerForm.addEventListener('submit', async (e) => {
             e.preventDefault();
             
-            // Aqui você coletaria os dados:
-            // const name = document.getElementById('reg-name').value;
-            // const email = document.getElementById('reg-email').value;
-            // ...
-
-            alert('Conta criada com sucesso! Redirecionando para o Login.');
-            window.location.href = "../Login/index.html";
+            const nome = document.getElementById('reg-name').value;
+            const email = document.getElementById('reg-email').value;
+            const telefone = document.getElementById('reg-phone').value;
+            const password = document.getElementById('reg-password').value;
+            
+            try {
+                await window.API.registerUser({ nome, email, password, telefone });
+                alert('Conta criada com sucesso! Redirecionando para o Login.');
+                window.location.href = "../Login/index.html";
+            } catch (error) {
+                console.error("Erro no registro:", error);
+                alert('Erro no registro: ' + error.message);
+            }
         });
     }
 
-    // Lógica do Botão Google (simulação)
     const googleBtn = document.querySelector('.google-btn');
     if (googleBtn) {
         googleBtn.addEventListener('click', () => {
             alert('Iniciando autenticação com Google...');
-            // Aqui entraria a integração real com Firebase Auth ou similar
         });
     }
 });

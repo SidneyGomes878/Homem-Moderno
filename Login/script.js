@@ -4,7 +4,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const passwordInput = document.getElementById('user-password');
     const loginForm = document.getElementById('loginForm');
 
-    // 1. Lógica para mostrar/esconder a senha
     if (togglePassword && passwordInput) {
         togglePassword.addEventListener('click', () => {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
@@ -20,23 +19,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 2. Lógica de submissão do formulário (Login Simulado)
     if (loginForm) {
-        loginForm.addEventListener('submit', (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault(); 
             
-            const nome = document.getElementById('user-name').value;
+            console.log('API available:', window.API);
+            if (!window.API) {
+                alert('API não carregada. Recarregue a página.');
+                return;
+            }
             
-            // === SALVA O LOGIN NO NAVEGADOR ===
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userName', nome);
-
-            console.log("Login realizado para:", nome);
-
-            alert('Login bem-sucedido! Redirecionando para a Home.');
+            const email = document.getElementById('user-name').value;
+            const password = document.getElementById('user-password').value;
             
-            // Redireciona para a Home
-            window.location.href = "../Home/index.html";
+            try {
+                const response = await window.API.loginUser({ email, password });
+                console.log("Login realizado para:", email);
+                alert('Login bem-sucedido! Redirecionando para a Home.');
+                window.location.href = "../Home/index.html";
+            } catch (error) {
+                console.error("Erro no login:", error);
+                alert('Erro no login: ' + error.message);
+            }
         });
     }
 });

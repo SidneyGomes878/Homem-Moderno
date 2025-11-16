@@ -15,9 +15,12 @@
             <header>
                 <h1 class="barber-name">Homem Moderno</h1>
                 
-                <a href="../Login/index.html" class="user-icon-link">
-                    <i class="fas fa-user-circle user-icon"></i>
-                </a>
+                <div class="user-actions">
+                    <a href="../Login/index.html" class="user-icon-link">
+                        <i class="fas fa-user-circle user-icon"></i>
+                    </a>
+                    <button id="logoutBtn" class="logout-btn" style="display: none;" onclick="logout()">Sair</button>
+                </div>
             </header>
             <div class="search-container">
                 <input type="text" placeholder="Buscar Serviços" class="search-input">
@@ -196,6 +199,7 @@
         </div>
     </div>
 
+    <script src="../server/api.js"></script>
     <script src="home.js"></script>
 </body>
 </html>

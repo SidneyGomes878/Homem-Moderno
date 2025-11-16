@@ -212,3 +212,93 @@ header {
     font-weight: 700;
     cursor: pointer;
 }
+
+/* =================================================== */
+/* == ESTILOS DOS CARDS DE AGENDAMENTOS == */
+/* =================================================== */
+
+.appointments-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    padding: 20px;
+}
+
+.appointment-card {
+    background-color: var(--cinza-card);
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--cinza-borda);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.card-header h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--dourado);
+}
+
+.card-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: var(--branco);
+    font-size: 16px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.action-btn:hover {
+    background-color: var(--cinza-borda);
+}
+
+.edit-btn {
+    color: var(--dourado);
+}
+
+.delete-btn {
+    color: #ff6b6b;
+}
+
+.card-body p {
+    margin: 8px 0;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-body i {
+    width: 16px;
+    text-align: center;
+}
+
+.status {
+    font-weight: 600;
+}
+
+.status.agendado {
+    color: var(--dourado);
+}
+
+.status.cancelado {
+    color: #ff6b6b;
+}
+
+.status.concluido {
+    color: #4CAF50;
+}
