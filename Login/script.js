@@ -63,13 +63,13 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         // Se for Admin, redireciona para o painel Admin
                         alert('Login de Administrador bem-sucedido!');
-                        window.location.href = "../Administrador/adm.html"; // Manda para o Admin
+                        window.location.href = "Administrador/adm.html"; // Manda para o Admin
 
                     } else {
                         
                         // Se for Cliente ou outro, redireciona para a Home
                         alert('Login bem-sucedido! Redirecionando para a Home.');
-                        window.location.href = "../Home/index.html"; // Manda para a Home
+                        window.location.href = "Home/index.html"; // Manda para a Home
                     }
                     // === FIM DA CORREÇÃO ===
 
