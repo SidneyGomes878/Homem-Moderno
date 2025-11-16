@@ -1,16 +1,9 @@
-// ===================================================
-// == ESTADO GLOBAL DO APLICATIVO
-// ===================================================
-
 let allSelections = [];
 let selectedProfessional = null;
 let selectedTime = null;
-let userAppointments = []; // (Usado apenas pela aba 'Agendamentos')
+let userAppointments = [];
 let currentModalData = {}; 
 
-// ===================================================
-// == ELEMENTOS DO DOM (CACHE)
-// ===================================================
 const homeWrapper = document.getElementById('homeWrapper');
 const nextButtonHome = document.getElementById('nextButtonHome');
 const nextCountHome = document.getElementById('nextCountHome');
@@ -36,9 +29,6 @@ const modalTotalAmountSpan = document.getElementById('modalTotalAmount');
 const successMessage = document.getElementById('successMessage');
 const payButton = document.getElementById('payButton');
 
-// ===================================================
-// == LÓGICA DO CARROSSEL (BANNER)
-// ===================================================
 function createDots() { if (!sliderNav || slideCount === 0) return; sliderNav.innerHTML = ''; for (let i = 0; i < slideCount; i++) { const dot = document.createElement('div'); dot.classList.add('slider-dot'); dot.setAttribute('data-slide', i); dot.addEventListener('click', () => { goToSlide(i); resetInterval(); }); sliderNav.appendChild(dot); } }
 function updateDots() { const dots = document.querySelectorAll('.slider-dot'); dots.forEach(dot => { dot.classList.remove('active'); if (parseInt(dot.getAttribute('data-slide')) === currentSlide) { dot.classList.add('active'); } }); }
 function goToSlide(slideIndex) { if (!sliderTrack) return; const offset = -(100 / slideCount) * slideIndex; sliderTrack.style.transform = `translateX(${offset}%)`; currentSlide = slideIndex; updateDots(); }
@@ -47,16 +37,9 @@ function startInterval() { clearInterval(slideInterval); slideInterval = setInte
 function resetInterval() { clearInterval(slideInterval); startInterval(); }
 function initCarousel() { if (slides.length > 0) { createDots(); goToSlide(0); startInterval(); } }
 
-
-// ===================================================
-// == LÓGICA DA TELA HOME (ETAPA 1)
-// ===================================================
-
 function showTab(tabName, element) {
     if (tabName === 'agendamentos') {
         if (userAppointments.length > 0) {
-            // (Lógica futura para mostrar agendamentos reais)
-            // Por enquanto, apenas mostra o estado vazio
             contentServicos.classList.add('hidden');
             contentAgendamentos.classList.remove('hidden');
         } else {
@@ -117,13 +100,10 @@ function handleNextStep() {
     }
 }
 
-// ===================================================
-// == LÓGICA DE VERIFICAÇÃO DE LOGIN
-// ===================================================
 function checkLoginAndProceed() {
-    const isLoggedIn = localStorage.getItem('isLoggedIn');
+    const token = localStorage.getItem('authToken');
 
-    if (isLoggedIn === 'true') {
+    if (token) {
         openAgendarModal(); // (isViewing foi removido, é sempre um novo agendamento)
     } else {
         alert("Você precisa fazer login para continuar o agendamento.");
@@ -131,9 +111,6 @@ function checkLoginAndProceed() {
     }
 }
 
-// ===================================================
-// == LÓGICA DA BARRA DE PESQUISA
-// ===================================================
 function initSearch() {
     const searchInput = document.querySelector('.search-input');
     if (!searchInput) return;
@@ -157,9 +134,6 @@ function initSearch() {
     });
 }
 
-// ===================================================
-// == LÓGICA DO MODAL "PRÓXIMO" (ETAPA 2)
-// ===================================================
 function openProximoModal() { proximoModal.classList.remove('hidden'); homeWrapper.classList.add('hidden'); resetProximoSelections(); }
 function closeProximoModal() { proximoModal.classList.add('hidden'); homeWrapper.classList.remove('hidden'); }
 function resetProximoSelections() { selectedProfessional = null; selectedTime = null; professionalList.querySelectorAll('.selection-item').forEach(item => item.classList.remove('selected')); timeList.querySelectorAll('.time-slot').forEach(item => item.classList.remove('selected')); updateProximoNextButton(); }
@@ -167,13 +141,8 @@ function selectProfessional(element, name) { professionalList.querySelectorAll('
 function selectTime(element, time) { timeList.querySelectorAll('.time-slot').forEach(item => item.classList.remove('selected')); element.classList.add('selected'); selectedTime = time; updateProximoNextButton(); }
 function updateProximoNextButton() { if (selectedProfessional && selectedTime) { nextButtonProximo.classList.remove('hidden'); nextCountProximo.textContent = `${selectedProfessional} @ ${selectedTime}`; } else { nextButtonProximo.classList.add('hidden'); nextCountProximo.textContent = 'Selecione'; } }
 
-// ===================================================
-// == LÓGICA DO MODAL "AGENDAR" (ETAPA 3)
-// ===================================================
 
-// NOVO: Redireciona para a página de Pagamento
-function processPayment() { // (Nome antigo 'goToPayment' alterado)
-    // Salva os dados atuais no sessionStorage para a página de pagamento ler
+function processPayment() {
     currentModalData = {
         selections: [...allSelections],
         professional: selectedProfessional,
@@ -187,7 +156,6 @@ function processPayment() { // (Nome antigo 'goToPayment' alterado)
 
 function openAgendarModal() { 
     
-    // Garante que a UI esteja no estado inicial
     if(successMessage) {
         successMessage.classList.add('hidden');
     }
@@ -195,7 +163,6 @@ function openAgendarModal() {
         payButton.classList.remove('hidden');
     }
 
-    // Define os dados para o modal ATUAL
     currentModalData = {
         selections: [...allSelections], 
         professional: selectedProfessional,
@@ -223,7 +190,6 @@ function closeAgendarModal() {
     
     goToServicosTab();
     
-    // Limpa o sessionStorage e o parâmetro da URL (para evitar reabrir)
     sessionStorage.removeItem('currentAppointment');
     window.history.replaceState({}, document.title, window.location.pathname);
 }
@@ -231,14 +197,13 @@ function closeAgendarModal() {
 function removeItem(index) {
     if (currentModalData && currentModalData.selections) {
         const itemToRemove = currentModalData.selections[index];
-        // Remove do array de dados do modal atual
         currentModalData.selections.splice(index, 1);
         
-        // Remove do array de seleção global (carrinho)
+        // Remove do array de seleção (carrinho)
         allSelections = allSelections.filter(item => item.name !== itemToRemove.name);
         
         loadAgendarSummary();
-        updateHomeNextButton(); // Atualiza o contador do botão flutuante da Home
+        updateHomeNextButton();
 
         if (currentModalData.selections.length === 0) {
             closeAgendarModal();
@@ -300,23 +265,30 @@ function loadAgendarSummary() {
     modalTotalAmountSpan.textContent = `R$${totalValue.toFixed(2).replace('.', ',')}`;
 }
 
-// ===================================================
-// == INICIALIZAÇÃO
-// ===================================================
 document.addEventListener('DOMContentLoaded', () => {
     updateHomeNextButton();
     initCarousel(); 
     
-    // Verifica se o usuário está voltando da página de pagamento
+    const token = localStorage.getItem('authToken');
+    const logoutBtn = document.getElementById('logoutBtn');
+    if (token && logoutBtn) {
+        logoutBtn.style.display = 'inline-block';
+    }
+
     const urlParams = new URLSearchParams(window.location.search);
     const action = urlParams.get('action');
 
     if (action === 'openAgendarModal') {
         openAgendarModal();
     } else {
-        // Carregamento normal
         showTab('servicos', document.getElementById('tab-serviços'));
     }
     
     initSearch();
 });
+
+function logout() {
+    localStorage.removeItem('authToken');
+    localStorage.removeItem('isLoggedIn');
+    window.location.href = "../Login/index.html";
+}
